@@ -1,10 +1,12 @@
+import { TeamList } from "./team-list";
+
 export function About() {
   return (
     <section className="section" id="about">
       <div className="section-inner">
         <div className="about-grid">
           <div>
-            <div className="eyebrow" style={{ marginBottom: 14 }}>— O nás</div>
+            <div className="eyebrow">— O nás</div>
             <h2 className="display-l">
               Řemeslo,
               <br />
@@ -18,21 +20,10 @@ export function About() {
             </p>
             <p className="body-text">
               Nově otevřený barbershop v Brně-Žabovřeskách. Klademe důraz na profesionalitu,
-              osobní přístup a precizní stříhání. Doporučíme střih, který sedne k vašemu typu
-              vlasů i k vám.
+              osobní přístup a precizní stříhání. Doporučíme ti střih, který sedne tvému typu
+              vlasů i tobě.
             </p>
-            <div className="team">
-              <div>
-                <b>Tomáš Pelán</b>
-                <br />
-                <span>Holič &amp; majitel</span>
-              </div>
-              <div>
-                <b>Denisa Daňková</b>
-                <br />
-                <span>Holička</span>
-              </div>
-            </div>
+            <TeamList />
           </div>
         </div>
       </div>

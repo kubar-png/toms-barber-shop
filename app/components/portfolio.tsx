@@ -4,7 +4,7 @@ export function Portfolio() {
       <div className="section-inner">
         <div className="section-head">
           <div>
-            <div className="eyebrow" style={{ marginBottom: 8 }}>— Portfolio</div>
+            <div className="eyebrow">— Portfolio</div>
             <h2 className="display-l">Práce z křesla</h2>
           </div>
           <p className="body-text" style={{ maxWidth: "36ch", fontSize: 14 }}>

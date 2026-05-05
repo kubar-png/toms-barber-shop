@@ -24,15 +24,22 @@
 }
 
 /* ── Base ──────────────────────────────────────────────── */
-html, body {
-  background: var(--bg);
-  color: var(--fg);
-}
+html, body { color: var(--fg); }
+html { background: var(--bg); }
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Continuous spotlight backdrop — gradients span the whole page,
+     unbroken by section borders. Positions are % of total body height. */
+  background-color: transparent;
+  background-image:
+    radial-gradient(ellipse 55% 11% at 22% 24%, #E0C49C18 0%, transparent 65%),
+    radial-gradient(ellipse 78% 10% at 70% 42%, #E0C49C14 0%, transparent 65%),
+    radial-gradient(ellipse 48% 13% at 35% 60%, #E0C49C1a 0%, transparent 60%),
+    radial-gradient(ellipse 62%  9% at 76% 78%, #E0C49C13 0%, transparent 64%);
+  background-repeat: no-repeat;
 }
 a { color: inherit; text-decoration: none; }
 
@@ -40,7 +47,13 @@ a { color: inherit; text-decoration: none; }
 .eyebrow {
   font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
   color: var(--fg-muted); font-weight: 500;
+  margin-bottom: 24px;
 }
+.hero .eyebrow { margin-bottom: 40px; }
+/* About — extra room because "Ř" háček extends above cap height */
+#about .eyebrow { margin-bottom: 36px; }
+.head-wrap + .display-sub { margin-top: 18px; }
+.display-l + .quote, .display-l + .body-text { margin-top: 16px; }
 .rule { height: 1px; background: var(--rule); }
 .rule-strong { height: 1px; background: var(--fg); }
 .corner {
@@ -117,21 +130,17 @@ a { color: inherit; text-decoration: none; }
 /* Heading wrap (slash line + heading) */
 .head-wrap { position: relative; display: inline-block; padding: 0 24px; }
 
-/* Slash line — locked Slash-Emerge A */
+/* Slash line — locked Slash-Emerge A · sits behind the heading */
 .slash-line {
   position: absolute; pointer-events: none;
-  background: var(--accent);
-  box-shadow: 0 0 14px var(--accent), 0 0 32px #E0C49C66;
-  left: 0; right: 0; top: 50%; height: 2px;
+  z-index: 0;
+  background: #E0C49Cb3;
+  box-shadow: 0 0 6px #E0C49C66, 0 0 18px #E0C49C33;
+  left: 0; right: 0; top: 62%; height: 1px;
   transform: translateY(-50%) scaleX(0);
   transform-origin: left center;
 }
-.slash-line::after {
-  content: '';
-  position: absolute; top: -4px; right: 0; width: 18px; height: calc(100% + 8px);
-  background: radial-gradient(ellipse, #fff 0%, var(--accent) 40%, transparent 75%);
-  filter: blur(3px);
-}
+.head-wrap .display-xl { position: relative; z-index: 1; }
 
 /* Background atmosphere */
 .hero::before {
@@ -173,7 +182,7 @@ a { color: inherit; text-decoration: none; }
 .hero[data-anim="pending"] .btn,
 .hero[data-anim="pending"] .pillars,
 .hero[data-anim="pending"] .meta-row { visibility: hidden; }
-.hero[data-anim="pending"] .display-xl { clip-path: inset(50% 0 50% 0); }
+.hero[data-anim="pending"] .display-xl { clip-path: inset(62% 0 38% 0); }
 
 /* ════════════════════════════════════════════════════════
    SECTION — O nás (About)
@@ -196,6 +205,75 @@ a { color: inherit; text-decoration: none; }
 }
 .team b { color: var(--fg); font-weight: 600; letter-spacing: 0.12em; }
 
+/* Clickable barber name → opens tiny popover with fakturační údaje */
+.team-member { position: relative; display: inline-block; }
+.team-trigger {
+  background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit; letter-spacing: inherit; text-align: left;
+  cursor: pointer; display: inline-block;
+}
+.team-trigger b {
+  border-bottom: 1px dashed var(--fg-muted);
+  padding-bottom: 2px;
+  transition: border-color .2s, color .2s;
+}
+.team-trigger:hover b { border-bottom-color: var(--accent); color: var(--accent); }
+.team-trigger[aria-expanded="true"] b { border-bottom-color: var(--accent); color: var(--accent); }
+.team-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+
+/* Tiny popover anchored above the barber name — no overlay, just floats */
+.info-popover {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 0;
+  z-index: 50;
+  width: 240px;
+  max-width: calc(100vw - 32px);
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 14px 16px 14px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow:
+    0 12px 28px -10px rgba(0, 0, 0, 0.6),
+    0 0 0 1px #ffffff08;
+  animation: popover-in 160ms cubic-bezier(.215, .61, .355, 1);
+  transform-origin: bottom left;
+}
+@keyframes popover-in {
+  from { opacity: 0; transform: translateY(4px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+/* Tiny tail pointing down at the name */
+.info-popover::after {
+  content: "";
+  position: absolute;
+  left: 22px; top: 100%;
+  width: 10px; height: 10px;
+  background: var(--bg);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  transform: translateY(-6px) rotate(45deg);
+}
+
+.info-popover-name {
+  font-family: var(--font-display), serif; font-style: italic; font-weight: 700;
+  font-size: 16px; line-height: 1.15; margin: 0 0 10px;
+  letter-spacing: -0.005em; color: var(--fg);
+}
+.info-popover-list {
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 12px;
+  font-size: 12px; margin: 0;
+}
+.info-popover-list dt {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--fg-muted); padding-top: 2px; font-weight: 500;
+}
+.info-popover-list dd { color: var(--fg); margin: 0; line-height: 1.4; }
+
 /* ════════════════════════════════════════════════════════
    SECTION — Ceník (per-barber columns)
    ════════════════════════════════════════════════════════ */
@@ -215,11 +293,22 @@ a { color: inherit; text-decoration: none; }
 .cenik-row:last-child { border-bottom: 1px dotted var(--rule); }
 .cenik-row > :first-child { flex: 1; min-width: 180px; }
 .cenik-name { font-size: 17px; font-weight: 500; }
-.cenik-meta { font-size: 12px; color: var(--fg-muted); margin-top: 2px; letter-spacing: 0.04em; }
+.cenik-desc { font-size: 13px; color: var(--fg-dim); margin-top: 4px; max-width: 38ch; line-height: 1.45; }
+.cenik-meta { font-size: 11px; color: var(--fg-muted); margin-top: 4px; letter-spacing: 0.04em; }
 .cenik-price {
   font-family: var(--font-display), serif; font-weight: 700;
   font-variant-numeric: tabular-nums; font-size: 22px;
   min-width: 80px; text-align: right;
+}
+
+@media (max-width: 520px) {
+  .cenik-row {
+    align-items: flex-start;
+    gap: 10px 16px;
+  }
+  .cenik-row > :first-child { min-width: 100%; }
+  .cenik-price { font-size: 20px; min-width: 0; }
+  .btn-mini { margin-left: auto; }
 }
 
 /* Compact pill — per-service "Rezervovat" */
@@ -288,20 +377,26 @@ a { color: inherit; text-decoration: none; }
   font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--fg-muted);
 }
 .contact-links a > span:last-child::after { content: " ↗"; opacity: 0.5; margin-left: 4px; }
-.map-placeholder {
+.map-frame {
   aspect-ratio: 4 / 3; border-radius: 4px; overflow: hidden; position: relative;
-  background:
-    linear-gradient(transparent 49%, var(--rule) 49% 51%, transparent 51%) 0 0/100% 40px,
-    linear-gradient(90deg, transparent 49%, var(--rule) 49% 51%, transparent 51%) 0 0/40px 100%,
-    #0d1322;
+  background: #0d1322;
   border: 1px solid var(--rule);
 }
-.map-placeholder::after {
-  content: ""; position: absolute; left: 50%; top: 50%;
-  width: 14px; height: 14px; border-radius: 50%;
-  background: var(--accent); transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 8px #E0C49C2e, 0 0 0 16px #E0C49C12;
+.map-canvas { width: 100%; height: 100%; background: #0d1322; }
+
+/* Leaflet attribution — small + muted */
+.map-frame .leaflet-control-attribution {
+  font-size: 9px; opacity: 0.45; background: transparent;
+  color: var(--fg-muted); padding: 2px 6px;
 }
+.map-frame .leaflet-control-attribution a { color: var(--fg-dim); }
+.map-frame .leaflet-tooltip {
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--rule); box-shadow: none;
+  font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.05em;
+  padding: 4px 8px; border-radius: 2px;
+}
+.map-frame .leaflet-tooltip-top::before { border-top-color: var(--rule); }
 .parking { margin-top: 14px; font-size: 12px; color: var(--fg-muted); letter-spacing: 0.04em; }
 
 /* ════════════════════════════════════════════════════════

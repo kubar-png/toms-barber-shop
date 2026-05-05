@@ -25,7 +25,7 @@ export function Hero() {
         )
         .fromTo(
           hero.querySelector(".display-xl"),
-          { clipPath: "inset(50% 0 50% 0)" },
+          { clipPath: "inset(62% 0 38% 0)" },
           { clipPath: "inset(0% 0 0% 0)", duration: 0.6, ease: "power3.out" },
           0.7,
         )
@@ -139,21 +139,17 @@ export function Hero() {
       <div className="rule" />
 
       <div className="stack">
-        <div className="eyebrow" style={{ marginBottom: 18 }}>
-          EST. 2024 · BRNO-ŽABOVŘESKY
-        </div>
+        <div className="eyebrow">EST. 2024 · BRNO-ŽABOVŘESKY</div>
         <div className="head-wrap">
           <span className="slash-line" aria-hidden="true" />
           <h1 className="display-xl">Tom&apos;s</h1>
         </div>
-        <div className="display-sub" style={{ marginTop: 8 }}>
-          Barbershop
-        </div>
+        <div className="display-sub">Barbershop</div>
         <p className="body-text" style={{ marginTop: 28, marginBottom: 28, marginInline: "auto" }}>
           Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách.
         </p>
         <div className="ctas" style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-          <a className="btn btn-primary btn-arrow" href="mailto:[email protected]?subject=Rezervace">
+          <a className="btn btn-primary btn-arrow" href="#cenik">
             Rezervovat
           </a>
           <a className="btn btn-ghost" href="#cenik">

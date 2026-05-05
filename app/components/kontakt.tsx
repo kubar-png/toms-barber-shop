@@ -1,10 +1,12 @@
+import { MapDark } from "./map-dark";
+
 export function Kontakt() {
   return (
     <section className="section" id="contact">
       <div className="section-inner">
         <div className="section-head">
           <div>
-            <div className="eyebrow" style={{ marginBottom: 8 }}>— Kontakt</div>
+            <div className="eyebrow">— Kontakt</div>
             <h2 className="display-l">Najdete nás</h2>
           </div>
         </div>
@@ -45,7 +47,9 @@ export function Kontakt() {
             </div>
           </div>
           <div>
-            <div className="map-placeholder" aria-hidden="true" />
+            <div className="map-frame">
+              <MapDark />
+            </div>
           </div>
         </div>
       </div>
