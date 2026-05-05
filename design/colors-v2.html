@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tom's Barbershop — Body fonts & accent colors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Mona+Sans:ital,wght@0,300..700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=Plus+Jakarta+Sans:wght@300..700&family=Manrope:wght@300..700&family=Inter+Tight:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --display: 'Bodoni Moda', serif;
+    --bg: #070B14;
+    --fg: #F1ECDC;
+  }
+  body {
+    background: #1a1a1a; color: #ddd; padding: 40px 32px 80px; line-height: 1.6;
+    font-family: 'Inter Tight', system-ui, sans-serif;
+  }
+  h1 { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 36px; margin-bottom: 8px; letter-spacing: -.02em; color:#fff; }
+  h2 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 56px 0 16px; color:#fff; letter-spacing:.02em; }
+  .lede { color: #999; max-width: 64ch; margin-bottom: 16px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 1200px; margin: 0 auto; }
+
+  .card {
+    background: var(--bg); color: var(--fg);
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 24px 48px -16px rgba(0,0,0,.6);
+  }
+  .label-bar {
+    background: #050810; color: #aab;
+    padding: 12px 20px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .label-bar strong { color: #fff; letter-spacing: .15em; }
+  .card-inner { padding: 44px 40px 40px; }
+
+  .meta { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; opacity: .65; margin-bottom: 28px; }
+
+  .display {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: clamp(56px, 9vw, 96px); line-height: .92; letter-spacing: -0.04em;
+  }
+  .sub {
+    font-family: var(--display); font-weight: 400; font-size: 18px;
+    letter-spacing: 0.32em; text-transform: uppercase; margin-bottom: 24px; opacity: .82;
+  }
+
+  .pillars {
+    display: flex; flex-wrap: wrap; gap: 8px 22px;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    opacity: .75; margin-bottom: 28px;
+  }
+  .pillars span::after { content: '·'; margin-left: 22px; opacity: .45; }
+  .pillars span:last-child::after { content: ''; }
+
+  .body-text { max-width: 56ch; font-size: 16px; line-height: 1.65; opacity: .9; margin-bottom: 28px; }
+
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  /* default button — overridden per section */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 46px; padding: 0 26px;
+    border: 1px solid currentColor; border-radius: 999px;
+    text-decoration: none; transition: background-color .2s, color .2s, border-color .2s;
+    cursor: pointer;
+  }
+  .btn.ghost { background: transparent; color: var(--fg); }
+  .btn.primary { background: var(--accent, var(--fg)); color: var(--accent-fg, var(--bg)); border-color: var(--accent, var(--fg)); }
+  .btn.primary:hover { filter: brightness(1.1); }
+  .btn.ghost:hover { background: rgba(255,255,255,.06); }
+
+  /* === Section A: body + button font candidates === */
+  .a-card { font-family: var(--body, system-ui); }
+  .a-card .btn { font-family: var(--button, var(--body, system-ui)); }
+
+  .label-A1 { --body: 'Mona Sans'; --button: 'Mona Sans'; }
+  .label-A2 { --body: 'Bricolage Grotesque'; --button: 'Bricolage Grotesque'; }
+  .label-A3 { --body: 'Plus Jakarta Sans'; --button: 'Plus Jakarta Sans'; }
+  .label-A4 { --body: 'Manrope'; --button: 'Manrope'; }
+  .label-A5 { --body: 'Inter Tight'; --button: 'Inter Tight'; }
+  .label-A6 { --body: 'Space Grotesk'; --button: 'Space Grotesk'; }
+
+  /* Button label treatments inside section A — show both variants per card */
+  .btn-row-2 { display:flex; flex-wrap:wrap; gap: 8px 24px; align-items:center; margin-top: 8px; }
+  .btn-row-2 .label { font-size: 10px; letter-spacing:.2em; text-transform:uppercase; opacity:.5; min-width: 11ch; font-family: 'Inter Tight'; }
+
+  .btn--upper { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+  .btn--sentence { font-size: 15px; font-weight: 500; letter-spacing: 0.01em; }
+
+  /* === Section B: accent color candidates === */
+  .b-card { font-family: 'Mona Sans', system-ui, sans-serif; } /* placeholder body for color comparison */
+  .b-card .btn { font-family: 'Mona Sans', system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+
+  .accent-B1 { --accent: #C9A66B; --accent-fg: #070B14; } /* brass */
+  .accent-B2 { --accent: #D9692A; --accent-fg: #F1ECDC; } /* burnt orange */
+  .accent-B3 { --accent: #8C2A2A; --accent-fg: #F1ECDC; } /* oxblood */
+  .accent-B4 { --accent: #C9A227; --accent-fg: #070B14; } /* mustard */
+  .accent-B5 { --accent: #D43F2C; --accent-fg: #F1ECDC; } /* cherry red */
+  .accent-B6 { --accent: #1E5A6B; --accent-fg: #F1ECDC; } /* petrol teal */
+  .accent-B7 { --accent: #6BA67A; --accent-fg: #070B14; } /* sage */
+  .accent-B8 { --accent: #E0C49C; --accent-fg: #070B14; } /* champagne */
+
+  /* compact heroes for section B (just hero + buttons, no body text) */
+  .b-card .body-text { display: none; }
+  .b-card .pillars { margin-bottom: 36px; }
+</style>
+</head>
+<body>
+  <h1>Body fonts &amp; accent colors</h1>
+  <p class="lede">Locked: display = Bodoni Moda. Background <code>#070B14</code> · text <code>#F1ECDC</code>. Section A: pick a body + button font (each card shows both UPPERCASE-tracked and Sentence-case button labels). Section B: pick a CTA accent color.</p>
+
+  <h2>A — Body &amp; button font</h2>
+
+  <div class="grid">
+    <article class="card a-card label-A1">
+      <div class="label-bar"><strong>A1 · Mona Sans</strong><span>distinctive, slightly editorial sans</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách nabízí klasické pánské střihy, holení horkým ručníkem a péči o vousy. Rezervujte si křeslo nebo přijďte bez objednání.</p>
+        <div class="btn-row-2">
+          <span class="label">Uppercase</span>
+          <a class="btn primary btn--upper" href="#">Rezervovat</a>
+          <a class="btn ghost btn--upper" href="#">Ceník</a>
+        </div>
+        <div class="btn-row-2">
+          <span class="label">Sentence</span>
+          <a class="btn primary btn--sentence" href="#">Rezervovat termín</a>
+          <a class="btn ghost btn--sentence" href="#">Prohlédnout ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card a-card label-A2">
+      <div class="label-bar"><strong>A2 · Bricolage Grotesque</strong><span>variable, expressive, modern</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách nabízí klasické pánské střihy, holení horkým ručníkem a péči o vousy. Rezervujte si křeslo nebo přijďte bez objednání.</p>
+        <div class="btn-row-2">
+          <span class="label">Uppercase</span>
+          <a class="btn primary btn--upper" href="#">Rezervovat</a>
+          <a class="btn ghost btn--upper" href="#">Ceník</a>
+        </div>
+        <div class="btn-row-2">
+          <span class="label">Sentence</span>
+          <a class="btn primary btn--sentence" href="#">Rezervovat termín</a>
+          <a class="btn ghost btn--sentence" href="#">Prohlédnout ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card a-card label-A3">
+      <div class="label-bar"><strong>A3 · Plus Jakarta Sans</strong><span>clean, contemporary, neutral</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách nabízí klasické pánské střihy, holení horkým ručníkem a péči o vousy. Rezervujte si křeslo nebo přijďte bez objednání.</p>
+        <div class="btn-row-2">
+          <span class="label">Uppercase</span>
+          <a class="btn primary btn--upper" href="#">Rezervovat</a>
+          <a class="btn ghost btn--upper" href="#">Ceník</a>
+        </div>
+        <div class="btn-row-2">
+          <span class="label">Sentence</span>
+          <a class="btn primary btn--sentence" href="#">Rezervovat termín</a>
+          <a class="btn ghost btn--sentence" href="#">Prohlédnout ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card a-card label-A4">
+      <div class="label-bar"><strong>A4 · Manrope</strong><span>friendly, geometric, modern</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách nabízí klasické pánské střihy, holení horkým ručníkem a péči o vousy. Rezervujte si křeslo nebo přijďte bez objednání.</p>
+        <div class="btn-row-2">
+          <span class="label">Uppercase</span>
+          <a class="btn primary btn--upper" href="#">Rezervovat</a>
+          <a class="btn ghost btn--upper" href="#">Ceník</a>
+        </div>
+        <div class="btn-row-2">
+          <span class="label">Sentence</span>
+          <a class="btn primary btn--sentence" href="#">Rezervovat termín</a>
+          <a class="btn ghost btn--sentence" href="#">Prohlédnout ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card a-card label-A5">
+      <div class="label-bar"><strong>A5 · Inter Tight</strong><span>refined, neutral, very legible</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách nabízí klasické pánské střihy, holení horkým ručníkem a péči o vousy. Rezervujte si křeslo nebo přijďte bez objednání.</p>
+        <div class="btn-row-2">
+          <span class="label">Uppercase</span>
+          <a class="btn primary btn--upper" href="#">Rezervovat</a>
+          <a class="btn ghost btn--upper" href="#">Ceník</a>
+        </div>
+        <div class="btn-row-2">
+          <span class="label">Sentence</span>
+          <a class="btn primary btn--sentence" href="#">Rezervovat termín</a>
+          <a class="btn ghost btn--sentence" href="#">Prohlédnout ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card a-card label-A6">
+      <div class="label-bar"><strong>A6 · Space Grotesk</strong><span>technical, slightly retro</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách nabízí klasické pánské střihy, holení horkým ručníkem a péči o vousy. Rezervujte si křeslo nebo přijďte bez objednání.</p>
+        <div class="btn-row-2">
+          <span class="label">Uppercase</span>
+          <a class="btn primary btn--upper" href="#">Rezervovat</a>
+          <a class="btn ghost btn--upper" href="#">Ceník</a>
+        </div>
+        <div class="btn-row-2">
+          <span class="label">Sentence</span>
+          <a class="btn primary btn--sentence" href="#">Rezervovat termín</a>
+          <a class="btn ghost btn--sentence" href="#">Prohlédnout ceník</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <h2>B — CTA accent color (the "Rezervovat" button)</h2>
+  <p class="lede" style="margin-bottom:24px">Each option pairs the same hero with a different primary CTA color so you can compare. The ghost button stays paper-on-ink in all of them.</p>
+
+  <div class="grid">
+
+    <article class="card b-card accent-B1">
+      <div class="label-bar"><strong>B1 · Brass <code style="font-size:11px">#C9A66B</code></strong><span>traditional, refined, "old-school" barber</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card b-card accent-B2">
+      <div class="label-bar"><strong>B2 · Burnt Orange <code style="font-size:11px">#D9692A</code></strong><span>warm, energetic, modern</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card b-card accent-B3">
+      <div class="label-bar"><strong>B3 · Oxblood <code style="font-size:11px">#8C2A2A</code></strong><span>classic barber-pole red, deep, masculine</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card b-card accent-B4">
+      <div class="label-bar"><strong>B4 · Mustard <code style="font-size:11px">#C9A227</code></strong><span>bold, retro, eye-catching</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card b-card accent-B5">
+      <div class="label-bar"><strong>B5 · Cherry Red <code style="font-size:11px">#D43F2C</code></strong><span>loud, Americana, hard to miss</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card b-card accent-B6">
+      <div class="label-bar"><strong>B6 · Petrol Teal <code style="font-size:11px">#1E5A6B</code></strong><span>unexpected, refined, cool against the warm paper</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card b-card accent-B7">
+      <div class="label-bar"><strong>B7 · Sage <code style="font-size:11px">#6BA67A</code></strong><span>fresh, calming, unusual for a barber</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card b-card accent-B8">
+      <div class="label-bar"><strong>B8 · Champagne <code style="font-size:11px">#E0C49C</code></strong><span>soft, premium, almost monochrome</span></div>
+      <div class="card-inner">
+        <div class="meta">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        <div class="display">Tom's</div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <div class="ctas">
+          <a class="btn primary" href="#">Rezervovat</a>
+          <a class="btn ghost" href="#">Ceník</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tom's Barbershop — Color Combinations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --display: 'Bodoni Moda', serif;
+    --body: 'Fraunces', serif;
+  }
+  html { font-family: var(--body); -webkit-font-smoothing: antialiased; }
+  body { background: #1a1a1a; color: #ddd; padding: 40px 32px 80px; line-height: 1.6; }
+  h1 { font-family: var(--display); font-weight: 900; font-size: 32px; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .lede { color: #999; max-width: 60ch; margin-bottom: 48px; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1100px; margin: 0 auto; }
+
+  .card {
+    border-radius: 4px; overflow: hidden; position: relative;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,.6);
+  }
+  .card-inner { padding: 56px 48px 48px; }
+
+  .meta { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 40px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: .65; }
+  .swatch-row { display: flex; gap: 12px; }
+  .swatch { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .swatch .chip { width: 28px; height: 28px; border-radius: 2px; border: 1px solid currentColor; opacity: .9; }
+  .swatch code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; opacity: .75; }
+
+  .rule { height: 1px; background: currentColor; opacity: .25; margin: 24px 0 32px; }
+
+  .display {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: clamp(64px, 12vw, 132px); line-height: .92; letter-spacing: -0.04em;
+    margin-bottom: 8px;
+  }
+  .display sup { font-style: normal; font-weight: 700; font-size: 0.18em; vertical-align: top; opacity: .6; letter-spacing: 0.1em; margin-left: 6px; }
+  .sub { font-family: var(--display); font-weight: 400; font-size: 22px; letter-spacing: 0.32em; text-transform: uppercase; margin-bottom: 32px; opacity: .82; }
+
+  .pillars { display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; opacity: .75; margin-bottom: 40px; }
+  .pillars span::after { content: '·'; margin-left: 28px; opacity: .45; }
+  .pillars span:last-child::after { content: ''; }
+
+  .body-text { max-width: 56ch; font-size: 16px; line-height: 1.7; opacity: .85; margin-bottom: 36px; }
+
+  .ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 56px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 48px; padding: 0 28px;
+    font-family: var(--body); font-size: 13px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    border: 1px solid currentColor; border-radius: 999px;
+    text-decoration: none; transition: background-color .2s, color .2s;
+  }
+  .btn.primary { background: currentColor; }
+  .btn.primary span { color: var(--bg); }
+  .btn.ghost { background: transparent; }
+
+  /* Mini pricelist sample */
+  .menu { font-family: var(--body); border-top: 1px solid currentColor; padding-top: 28px; }
+  .menu h3 { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 22px; margin-bottom: 18px; opacity: .9; }
+  .menu .row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px dotted currentColor; opacity: .92; }
+  .menu .row .name { font-size: 16px; }
+  .menu .row .price { font-family: var(--display); font-weight: 700; font-variant-numeric: tabular-nums; min-width: 5ch; text-align: right; }
+
+  .label-bar {
+    background: #0a0a0a; color: #aaa;
+    padding: 14px 20px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .label-bar strong { color: #fff; letter-spacing: .15em; }
+</style>
+</head>
+<body>
+  <h1>Tom's Barbershop — color combinations</h1>
+  <p class="lede">Each card is the same hero + small ceník + CTA pair, only the background/foreground change. Off-black is tinted toward deep blue; off-whites range from warm paper to cool fog. Pick the one that <em>feels</em> right — we lock it in and the whole site uses just those two colors.</p>
+
+  <div class="grid">
+
+    <!-- 1. Midnight ink + warm paper -->
+    <article class="card" style="--bg:#070B14;--fg:#F1ECDC;background:var(--bg);color:var(--fg)">
+      <div class="label-bar"><strong>01 · Midnight Ink × Warm Paper</strong><span>warm, vintage, magazine</span></div>
+      <div class="card-inner">
+        <div class="meta">
+          <div>EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="chip" style="background:#070B14"></div><code>#070B14</code></div>
+            <div class="swatch"><div class="chip" style="background:#F1ECDC"></div><code>#F1ECDC</code></div>
+          </div>
+        </div>
+        <div class="display">Tom's<sup>®</sup></div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#"><span>Rezervovat</span></a>
+          <a class="btn ghost" href="#">Prohlédnout ceník</a>
+        </div>
+        <div class="menu">
+          <h3>Ceník — Tomáš</h3>
+          <div class="row"><span class="name">Střih</span><span class="time" style="opacity:.55;font-size:13px">45–60 min</span><span class="price">800 Kč</span></div>
+          <div class="row"><span class="name">Střih + Vousy</span><span class="time" style="opacity:.55;font-size:13px">75–90 min</span><span class="price">1 350 Kč</span></div>
+          <div class="row"><span class="name">Vousy</span><span class="time" style="opacity:.55;font-size:13px">30–45 min</span><span class="price">650 Kč</span></div>
+          <div class="row" style="border-bottom:none"><span class="name">Kompletní péče</span><span class="time" style="opacity:.55;font-size:13px">105–120 min</span><span class="price">1 750 Kč</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2. Deep navy + bone -->
+    <article class="card" style="--bg:#0B1220;--fg:#EBE6D6;background:var(--bg);color:var(--fg)">
+      <div class="label-bar"><strong>02 · Deep Navy × Bone</strong><span>more blue, slightly cooler</span></div>
+      <div class="card-inner">
+        <div class="meta">
+          <div>EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="chip" style="background:#0B1220"></div><code>#0B1220</code></div>
+            <div class="swatch"><div class="chip" style="background:#EBE6D6"></div><code>#EBE6D6</code></div>
+          </div>
+        </div>
+        <div class="display">Tom's<sup>®</sup></div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#"><span>Rezervovat</span></a>
+          <a class="btn ghost" href="#">Prohlédnout ceník</a>
+        </div>
+        <div class="menu">
+          <h3>Ceník — Tomáš</h3>
+          <div class="row"><span class="name">Střih</span><span class="time" style="opacity:.55;font-size:13px">45–60 min</span><span class="price">800 Kč</span></div>
+          <div class="row"><span class="name">Střih + Vousy</span><span class="time" style="opacity:.55;font-size:13px">75–90 min</span><span class="price">1 350 Kč</span></div>
+          <div class="row"><span class="name">Vousy</span><span class="time" style="opacity:.55;font-size:13px">30–45 min</span><span class="price">650 Kč</span></div>
+          <div class="row" style="border-bottom:none"><span class="name">Kompletní péče</span><span class="time" style="opacity:.55;font-size:13px">105–120 min</span><span class="price">1 750 Kč</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3. Almost black + eggshell -->
+    <article class="card" style="--bg:#0A0D14;--fg:#F4F1EA;background:var(--bg);color:var(--fg)">
+      <div class="label-bar"><strong>03 · Almost-Black × Eggshell</strong><span>most subtle, refined</span></div>
+      <div class="card-inner">
+        <div class="meta">
+          <div>EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="chip" style="background:#0A0D14"></div><code>#0A0D14</code></div>
+            <div class="swatch"><div class="chip" style="background:#F4F1EA"></div><code>#F4F1EA</code></div>
+          </div>
+        </div>
+        <div class="display">Tom's<sup>®</sup></div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#"><span>Rezervovat</span></a>
+          <a class="btn ghost" href="#">Prohlédnout ceník</a>
+        </div>
+        <div class="menu">
+          <h3>Ceník — Tomáš</h3>
+          <div class="row"><span class="name">Střih</span><span class="time" style="opacity:.55;font-size:13px">45–60 min</span><span class="price">800 Kč</span></div>
+          <div class="row"><span class="name">Střih + Vousy</span><span class="time" style="opacity:.55;font-size:13px">75–90 min</span><span class="price">1 350 Kč</span></div>
+          <div class="row"><span class="name">Vousy</span><span class="time" style="opacity:.55;font-size:13px">30–45 min</span><span class="price">650 Kč</span></div>
+          <div class="row" style="border-bottom:none"><span class="name">Kompletní péče</span><span class="time" style="opacity:.55;font-size:13px">105–120 min</span><span class="price">1 750 Kč</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4. Inkwell + cool fog -->
+    <article class="card" style="--bg:#080C16;--fg:#EEF1F5;background:var(--bg);color:var(--fg)">
+      <div class="label-bar"><strong>04 · Inkwell × Cool Fog</strong><span>cooler off-white, modern</span></div>
+      <div class="card-inner">
+        <div class="meta">
+          <div>EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="chip" style="background:#080C16"></div><code>#080C16</code></div>
+            <div class="swatch"><div class="chip" style="background:#EEF1F5"></div><code>#EEF1F5</code></div>
+          </div>
+        </div>
+        <div class="display">Tom's<sup>®</sup></div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#"><span>Rezervovat</span></a>
+          <a class="btn ghost" href="#">Prohlédnout ceník</a>
+        </div>
+        <div class="menu">
+          <h3>Ceník — Tomáš</h3>
+          <div class="row"><span class="name">Střih</span><span class="time" style="opacity:.55;font-size:13px">45–60 min</span><span class="price">800 Kč</span></div>
+          <div class="row"><span class="name">Střih + Vousy</span><span class="time" style="opacity:.55;font-size:13px">75–90 min</span><span class="price">1 350 Kč</span></div>
+          <div class="row"><span class="name">Vousy</span><span class="time" style="opacity:.55;font-size:13px">30–45 min</span><span class="price">650 Kč</span></div>
+          <div class="row" style="border-bottom:none"><span class="name">Kompletní péče</span><span class="time" style="opacity:.55;font-size:13px">105–120 min</span><span class="price">1 750 Kč</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5. Royal night + linen -->
+    <article class="card" style="--bg:#0E1530;--fg:#EFE9D7;background:var(--bg);color:var(--fg)">
+      <div class="label-bar"><strong>05 · Royal Night × Linen</strong><span>noticeably blue, dramatic</span></div>
+      <div class="card-inner">
+        <div class="meta">
+          <div>EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="chip" style="background:#0E1530"></div><code>#0E1530</code></div>
+            <div class="swatch"><div class="chip" style="background:#EFE9D7"></div><code>#EFE9D7</code></div>
+          </div>
+        </div>
+        <div class="display">Tom's<sup>®</sup></div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#"><span>Rezervovat</span></a>
+          <a class="btn ghost" href="#">Prohlédnout ceník</a>
+        </div>
+        <div class="menu">
+          <h3>Ceník — Tomáš</h3>
+          <div class="row"><span class="name">Střih</span><span class="time" style="opacity:.55;font-size:13px">45–60 min</span><span class="price">800 Kč</span></div>
+          <div class="row"><span class="name">Střih + Vousy</span><span class="time" style="opacity:.55;font-size:13px">75–90 min</span><span class="price">1 350 Kč</span></div>
+          <div class="row"><span class="name">Vousy</span><span class="time" style="opacity:.55;font-size:13px">30–45 min</span><span class="price">650 Kč</span></div>
+          <div class="row" style="border-bottom:none"><span class="name">Kompletní péče</span><span class="time" style="opacity:.55;font-size:13px">105–120 min</span><span class="price">1 750 Kč</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6. INVERSED: paper bg + ink fg -->
+    <article class="card" style="--bg:#F1ECDC;--fg:#070B14;background:var(--bg);color:var(--fg);box-shadow:0 30px 60px -20px rgba(0,0,0,.4)">
+      <div class="label-bar"><strong>06 · Inverted — Warm Paper × Midnight Ink</strong><span>same palette as 01, flipped</span></div>
+      <div class="card-inner">
+        <div class="meta">
+          <div>EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="chip" style="background:#F1ECDC"></div><code>#F1ECDC</code></div>
+            <div class="swatch"><div class="chip" style="background:#070B14"></div><code>#070B14</code></div>
+          </div>
+        </div>
+        <div class="display">Tom's<sup>®</sup></div>
+        <div class="sub">Barbershop</div>
+        <div class="pillars"><span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span></div>
+        <p class="body-text">Svou práci odvádím vždy na maximum — odcházíte s úsměvem na tváři. Nově otevřený barbershop v Brně-Žabovřeskách.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#"><span>Rezervovat</span></a>
+          <a class="btn ghost" href="#">Prohlédnout ceník</a>
+        </div>
+        <div class="menu">
+          <h3>Ceník — Tomáš</h3>
+          <div class="row"><span class="name">Střih</span><span class="time" style="opacity:.55;font-size:13px">45–60 min</span><span class="price">800 Kč</span></div>
+          <div class="row"><span class="name">Střih + Vousy</span><span class="time" style="opacity:.55;font-size:13px">75–90 min</span><span class="price">1 350 Kč</span></div>
+          <div class="row"><span class="name">Vousy</span><span class="time" style="opacity:.55;font-size:13px">30–45 min</span><span class="price">650 Kč</span></div>
+          <div class="row" style="border-bottom:none"><span class="name">Kompletní péče</span><span class="time" style="opacity:.55;font-size:13px">105–120 min</span><span class="price">1 750 Kč</span></div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</body>
+</html>

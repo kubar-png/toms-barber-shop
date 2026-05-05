@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tom's Barbershop — Mobile mocks (390px)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #070B14;
+    --fg: #F1ECDC;
+    --fg-dim: #f1ecdcb3;
+    --fg-muted: #f1ecdc7a;
+    --accent: #E0C49C;
+    --accent-fg: #070B14;
+    --rule: #f1ecdc24;
+    --display: 'Bodoni Moda', serif;
+    --body: 'Inter Tight', system-ui, sans-serif;
+  }
+  html, body {
+    background: #15171c; color: #cfd2d8;
+    font-family: var(--body); -webkit-font-smoothing: antialiased; line-height: 1.55;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Page chrome ───────────────────────────────────────── */
+  .page-head { padding: 28px 24px 12px; max-width: 1700px; margin: 0 auto; }
+  .page-head h1 { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 32px; color: #fff; letter-spacing: -.02em; }
+  .page-head p { color: #999; max-width: 64ch; margin-top: 6px; font-size: 14px; }
+  .group-head { padding: 36px 24px 8px; max-width: 1700px; margin: 0 auto; color: #fff; }
+  .group-head h2 { font-family: var(--display); font-weight: 700; font-size: 22px; }
+  .group-head p { color: #999; font-size: 13px; margin-top: 4px; }
+
+  /* ── Phone-frame device ────────────────────────────────── */
+  .rail {
+    display: flex; gap: 28px; overflow-x: auto; padding: 24px 24px 40px;
+    scroll-snap-type: x mandatory;
+  }
+  .rail::-webkit-scrollbar { height: 10px; }
+  .rail::-webkit-scrollbar-thumb { background: #2a2d35; border-radius: 5px; }
+  .stack-rail { display: flex; flex-direction: column; gap: 28px; padding: 24px; align-items: center; }
+
+  .phone {
+    width: 390px; flex-shrink: 0; scroll-snap-align: start;
+    border-radius: 36px; padding: 12px;
+    background: #0a0c12;
+    box-shadow: 0 0 0 1px #ffffff10, 0 30px 60px -20px rgba(0,0,0,.7);
+  }
+  .phone-screen {
+    border-radius: 26px; overflow: hidden; background: var(--bg); color: var(--fg);
+    height: 760px; overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  .phone-screen::-webkit-scrollbar { width: 0; }
+  .phone-status { flex-shrink: 0; }
+  .phone-tag {
+    text-align: center; color: var(--accent); font-size: 10px; letter-spacing: .3em;
+    text-transform: uppercase; padding: 8px 0 12px;
+  }
+  .phone-tag b { color: #fff; font-weight: 600; letter-spacing: .25em; margin-right: 8px; }
+  .phone-status {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 18px 6px; font-size: 12px; color: var(--fg);
+    font-feature-settings: "tnum"; font-variant-numeric: tabular-nums;
+  }
+  .phone-status .icons { letter-spacing: .15em; opacity: .85; }
+
+  /* ── Section atoms (mobile-tuned) ──────────────────────── */
+  .container-m { padding: 0 20px; }
+
+  .eyebrow { font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--fg-muted); font-weight: 500; }
+  .rule { height: 1px; background: var(--rule); }
+
+  .display-xl-m { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 96px; line-height: .9; letter-spacing: -.045em; }
+  .display-l-m { font-family: var(--display); font-weight: 700; font-size: 36px; line-height: 1.05; letter-spacing: -.01em; }
+  .display-m-m { font-family: var(--display); font-weight: 700; font-style: italic; font-size: 24px; line-height: 1.1; }
+  .display-sub-m { font-family: var(--display); font-weight: 400; font-size: 13px; letter-spacing: .4em; text-transform: uppercase; color: var(--fg-dim); }
+
+  .body-m { font-size: 15px; line-height: 1.6; color: var(--fg-dim); }
+  .body-sm-m { font-size: 13px; line-height: 1.5; color: var(--fg-dim); }
+
+  /* Buttons (locked) */
+  .btn-m {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 50px; padding: 0 24px;
+    font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+    border: 1px solid currentColor; border-radius: 999px;
+  }
+  .btn-primary-m { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .btn-ghost-m { background: transparent; color: var(--fg); }
+  .btn-arrow::after { content: " →"; margin-left: 4px; }
+  .ctas-m { display: flex; flex-direction: column; gap: 10px; }
+
+  .pillars-m { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-dim); justify-content: center; }
+  .pillars-m span { position: relative; padding-right: 18px; }
+  .pillars-m span::after { content: '·'; position: absolute; right: 4px; color: var(--fg-muted); }
+  .pillars-m span:last-child { padding-right: 0; }
+  .pillars-m span:last-child::after { content: ''; }
+
+  .corner-m { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-muted); }
+  .open-dot-m { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-right: 6px; box-shadow: 0 0 0 3px #E0C49C1f; }
+
+  /* ── All hero variants fill the phone viewport (100% screen) ─── */
+  .h1m, .h2m, .h3m, .h4m {
+    flex: 1 0 auto; min-height: 100%;
+    display: flex; flex-direction: column;
+    padding: 16px 0 28px;
+  }
+  .h1m .rule, .h2m .rule, .h3m .rule, .h4m .rule,
+  .h1m .top, .h2m .top, .h3m .top, .h4m .top,
+  .h1m .meta-row, .h3m .meta-row, .h4m .meta-row { flex-shrink: 0; }
+
+  /* ── Hero V1 (mobile) — Editorial / centered ─────────────── */
+  .h1m .top { display: flex; justify-content: space-between; padding: 14px 0; }
+  .h1m .stack {
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    text-align: center; padding: 32px 0;
+  }
+  .h1m .pillars-m { margin: 28px 0 32px; }
+  .h1m .meta-row { display: grid; gap: 10px; padding-top: 16px; text-align: center; }
+
+  /* ── Hero V2 (mobile) — Big top space, content concentrated low ─ */
+  .h2m .top { padding: 14px 0; }
+  .h2m .display-block { margin-top: auto; padding-top: 64px; }
+  .h2m .body-m { margin: 24px 0; }
+  .h2m .pillars-m { justify-content: flex-start; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); }
+
+  /* ── Hero V3 (mobile) — Hybrid centered + slim copy ────── */
+  .h3m .top { display: flex; justify-content: space-between; padding: 14px 0; }
+  .h3m .stack {
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    text-align: center; padding: 32px 0;
+  }
+  .h3m .body-m { margin: 22px auto; text-align: center; }
+  .h3m .pillars-m { margin-top: 28px; }
+  .h3m .meta-row { display: grid; gap: 10px; padding-top: 16px; text-align: center; }
+
+  /* ── Hero V4 (mobile) — Tall + shop-sign bands ─────────── */
+  .h4m .top { display: flex; justify-content: space-between; padding: 14px 0; }
+  .h4m .display-block { margin-top: auto; padding-top: 64px; }
+  .h4m .body-m { margin: 22px 0; }
+  .h4m .pillars-m { justify-content: flex-start; margin-top: 28px; }
+  .h4m .meta-row { display: grid; gap: 10px; padding-top: 16px; text-align: center; }
+
+  /* ── About (mobile) ────────────────────────────────────── */
+  .about-m { padding: 32px 0; }
+  .about-m h2 { margin-top: 8px; font-style: italic; }
+  .about-m .quote { font-family: var(--display); font-style: italic; font-size: 22px; line-height: 1.35; margin: 22px 0; color: var(--fg); }
+  .about-m .team { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--rule); display: grid; gap: 16px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-dim); }
+  .about-m .team b { color: var(--fg); font-weight: 600; }
+
+  /* ── Ceník V1 (mobile) — barber blocks stacked ─────────── */
+  .menu1m { padding: 32px 0; }
+  .menu1m .head { padding-bottom: 18px; border-bottom: 1px solid var(--fg); }
+  .menu1m .col { margin-top: 32px; }
+  .menu1m h3 { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 22px; margin: 4px 0 12px; }
+  .menu1m .col-eye { font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--fg-muted); }
+  .menu1m .row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: baseline; padding: 14px 0; border-top: 1px dotted var(--rule); }
+  .menu1m .row:last-child { border-bottom: 1px dotted var(--rule); }
+  .menu1m .name { font-size: 15px; font-weight: 500; }
+  .menu1m .meta { font-size: 11px; color: var(--fg-muted); margin-top: 2px; letter-spacing: .04em; }
+  .menu1m .price { font-family: var(--display); font-weight: 700; font-variant-numeric: tabular-nums; font-size: 19px; }
+
+  /* ── Portfolio (mobile) ────────────────────────────────── */
+  .port-m { padding: 32px 0; }
+  .port-m .head { padding-bottom: 18px; border-bottom: 1px solid var(--fg); }
+  .port-m .grid { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .port-m .cell { aspect-ratio: 4 / 5; border-radius: 2px; background: linear-gradient(135deg, #0f1626, #1a2438); border: 1px solid var(--rule); position: relative; }
+  .port-m .cell.tall { grid-column: span 2; aspect-ratio: 16 / 11; }
+  .port-m .cell::after { content: "GALERIE — BRZY"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 9px; letter-spacing: .3em; color: var(--fg-muted); }
+
+  /* ── Kontakt (mobile) ──────────────────────────────────── */
+  .kontakt-m { padding: 32px 0; }
+  .kontakt-m .head { padding-bottom: 18px; border-bottom: 1px solid var(--fg); }
+  .kontakt-m .addr { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 30px; line-height: 1.1; margin: 24px 0 8px; }
+  .kontakt-m .addr-meta { font-size: 13px; color: var(--fg-dim); margin-bottom: 24px; }
+  .kontakt-m .links { display: grid; gap: 0; }
+  .kontakt-m .links a { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
+  .kontakt-m .links a span:first-child { font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--fg-muted); }
+  .kontakt-m .map {
+    margin-top: 20px; aspect-ratio: 4/3; border-radius: 4px; position: relative;
+    background:
+      linear-gradient(transparent 49%, var(--rule) 49% 51%, transparent 51%) 0 0/100% 32px,
+      linear-gradient(90deg, transparent 49%, var(--rule) 49% 51%, transparent 51%) 0 0/32px 100%,
+      #0d1322;
+    border: 1px solid var(--rule);
+  }
+  .kontakt-m .map::after {
+    content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--accent); transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 6px #E0C49C2e, 0 0 0 14px #E0C49C12;
+  }
+  .kontakt-m .parking { margin-top: 12px; font-size: 11px; color: var(--fg-muted); letter-spacing: .04em; }
+
+  /* ── Footer (mobile) ───────────────────────────────────── */
+  .footer-m { margin-top: 40px; }
+  .footer-m .stripe { height: 22px; background: repeating-linear-gradient(45deg, var(--fg) 0 12px, var(--bg) 12px 24px, var(--accent) 24px 36px, var(--bg) 36px 48px); }
+  .footer-m .foot { padding: 28px 20px; display: grid; gap: 8px; text-align: center; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-muted); }
+  .footer-m .brand-mark { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 22px; letter-spacing: 0; text-transform: none; color: var(--fg); }
+
+  /* ── Sticky nav for jumping ────────────────────────────── */
+  .jump {
+    position: sticky; top: 0; z-index: 50;
+    background: #050810; border-bottom: 1px solid #ffffff14;
+    padding: 12px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  }
+  .jump strong { color: #fff; margin-right: 8px; }
+  .jump a { color: #aab; padding: 6px 10px; border: 1px solid #ffffff1a; border-radius: 999px; }
+  .jump a:hover { color: #fff; background: #ffffff0a; }
+</style>
+</head>
+<body>
+
+<div class="jump">
+  <strong>Mobile mocks</strong>
+  <a href="#heroes">Hero variants</a>
+  <a href="#sections">Other sections</a>
+</div>
+
+<div class="page-head">
+  <h1>Mobile mocks — 390px viewport</h1>
+  <p>All four hero variants rendered inside a phone-shaped frame, scrollable inside each device. The other sections (O nás, Ceník V1, Portfolio, Kontakt, Footer) follow at the bottom — already locked from earlier.</p>
+</div>
+
+<div class="group-head" id="heroes">
+  <h2>Hero variants — mobile</h2>
+  <p>Scroll horizontally between phones, or scroll inside each phone to see the full hero on a 390-wide screen.</p>
+</div>
+
+<div class="rail">
+
+  <!-- ╔════════════ Phone — Hero V1 ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>HERO V1</b>Editorial / centered</div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="h1m container-m">
+        <div class="rule"></div>
+        <div class="top">
+          <div class="corner-m"><span class="open-dot-m"></span>Otevřeno</div>
+          <div class="corner-m">Minská 98</div>
+        </div>
+        <div class="rule"></div>
+        <div class="stack">
+          <div class="eyebrow" style="margin-bottom:14px">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <h1 class="display-xl-m">Tom's</h1>
+          <div class="display-sub-m" style="margin-top:6px">Barbershop</div>
+          <div class="pillars-m" role="list">
+            <span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span><span>Doporučení střihu</span>
+          </div>
+          <div class="ctas-m">
+            <a class="btn-m btn-primary-m btn-arrow" href="#">Rezervovat</a>
+            <a class="btn-m btn-ghost-m" href="#">Ceník</a>
+          </div>
+        </div>
+        <div class="rule" style="margin-top:48px"></div>
+        <div class="meta-row">
+          <div class="corner-m">Po — Pá  ·  09:00 — 19:00</div>
+          <div class="corner-m">@_tomsbarbershop_</div>
+          <div class="corner-m">[email protected]</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ╔════════════ Phone — Hero V2 ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>HERO V2</b>Asymmetric / split</div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="h2m container-m">
+        <div class="rule"></div>
+        <div class="top">
+          <div class="eyebrow">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+        </div>
+        <div class="rule"></div>
+        <div class="display-block">
+          <h1 class="display-xl-m">Tom's</h1>
+          <div class="display-sub-m" style="margin-top:6px">Barbershop</div>
+        </div>
+        <p class="body-m">Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách. Rezervujte si křeslo nebo přijďte bez objednání — vždy odcházíte s úsměvem na tváři.</p>
+        <div class="ctas-m">
+          <a class="btn-m btn-primary-m btn-arrow" href="#">Rezervovat</a>
+          <a class="btn-m btn-ghost-m" href="#">Ceník</a>
+        </div>
+        <div class="pillars-m" role="list" style="justify-content:flex-start">
+          <span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span><span>Doporučení střihu</span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ╔════════════ Phone — Hero V3 ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>HERO V3</b>Hybrid · centered + slim copy</div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="h3m container-m">
+        <div class="rule"></div>
+        <div class="top">
+          <div class="corner-m"><span class="open-dot-m"></span>Otevřeno</div>
+          <div class="corner-m">Minská 98</div>
+        </div>
+        <div class="rule"></div>
+        <div class="stack">
+          <div class="eyebrow" style="margin-bottom:14px">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <h1 class="display-xl-m">Tom's</h1>
+          <div class="display-sub-m" style="margin-top:6px">Barbershop</div>
+          <p class="body-m">Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách.</p>
+          <div class="ctas-m">
+            <a class="btn-m btn-primary-m btn-arrow" href="#">Rezervovat</a>
+            <a class="btn-m btn-ghost-m" href="#">Ceník</a>
+          </div>
+          <div class="pillars-m" role="list">
+            <span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span><span>Doporučení střihu</span>
+          </div>
+        </div>
+        <div class="rule" style="margin-top:40px"></div>
+        <div class="meta-row">
+          <div class="corner-m">Po — Pá  ·  09:00 — 19:00</div>
+          <div class="corner-m">@_tomsbarbershop_</div>
+          <div class="corner-m">[email protected]</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ╔════════════ Phone — Hero V4 ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>HERO V4</b>Tall + shop-sign bands</div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="h4m container-m">
+        <div class="rule"></div>
+        <div class="top">
+          <div class="corner-m"><span class="open-dot-m"></span>Otevřeno · do 19:00</div>
+          <div class="corner-m">Minská 98</div>
+        </div>
+        <div class="rule"></div>
+        <div class="display-block">
+          <div class="eyebrow" style="margin-bottom:14px">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+          <h1 class="display-xl-m">Tom's</h1>
+          <div class="display-sub-m" style="margin-top:6px">Barbershop</div>
+        </div>
+        <p class="body-m">Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách. Rezervujte si křeslo nebo přijďte bez objednání.</p>
+        <div class="ctas-m">
+          <a class="btn-m btn-primary-m btn-arrow" href="#">Rezervovat</a>
+          <a class="btn-m btn-ghost-m" href="#">Ceník</a>
+        </div>
+        <div class="pillars-m" role="list" style="justify-content:flex-start">
+          <span>Profesionalita</span><span>Osobní přístup</span><span>Precizní stříhání</span><span>Doporučení střihu</span>
+        </div>
+        <div class="rule" style="margin-top:36px"></div>
+        <div class="meta-row">
+          <div class="corner-m">Po — Pá  ·  09:00 — 19:00</div>
+          <div class="corner-m">@_tomsbarbershop_</div>
+          <div class="corner-m">[email protected]</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+</div>
+
+<div class="group-head" id="sections">
+  <h2>Other sections — mobile</h2>
+  <p>Locked from earlier (Ceník V1). Each phone scrolls independently.</p>
+</div>
+
+<div class="rail" style="padding-bottom: 64px">
+
+  <!-- ╔════════════ Phone — O nás ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>O NÁS</b></div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="about-m container-m">
+        <div class="eyebrow">— O nás</div>
+        <h2 class="display-l-m" style="margin-top:8px;font-style:italic">Řemeslo,<br/>ne továrna.</h2>
+        <p class="quote">"Svou práci odvádím vždy na maximum. Klient odchází s úsměvem na tváři — to je celé."</p>
+        <p class="body-m">Nově otevřený barbershop v Brně-Žabovřeskách. Klademe důraz na profesionalitu, osobní přístup a precizní stříhání. Doporučíme střih, který sedne k vašemu typu vlasů i k vám.</p>
+        <div class="team">
+          <div><b>Tomáš Pelán</b><br/><span>Holič &amp; majitel</span></div>
+          <div><b>Denisa Daňková</b><br/><span>Holička</span></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ╔════════════ Phone — Ceník V1 ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>CENÍK V1</b>Per barber, stacked</div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="menu1m container-m">
+        <div class="head">
+          <div class="eyebrow">— Ceník</div>
+          <h2 class="display-l-m" style="margin-top:8px">Služby &amp; ceny</h2>
+          <p class="body-sm-m" style="margin-top:8px">Ceny jsou orientační. Konečnou cenu určí délka úkonu a typ služby.</p>
+        </div>
+        <div class="col">
+          <div class="col-eye">— TOMÁŠ</div>
+          <h3>Cenovka</h3>
+          <div class="row"><div><div class="name">Střih</div><div class="meta">45–60 min</div></div><div class="price">800 Kč</div></div>
+          <div class="row"><div><div class="name">Střih + Vousy</div><div class="meta">75–90 min</div></div><div class="price">1 350 Kč</div></div>
+          <div class="row"><div><div class="name">Vousy</div><div class="meta">30–45 min</div></div><div class="price">650 Kč</div></div>
+          <div class="row"><div><div class="name">Střih + Péče o pleť</div><div class="meta">75–90 min</div></div><div class="price">1 350 Kč</div></div>
+          <div class="row"><div><div class="name">Kompletní péče</div><div class="meta">105–120 min</div></div><div class="price">1 750 Kč</div></div>
+        </div>
+        <div class="col">
+          <div class="col-eye">— DENISA</div>
+          <h3>Cenovka</h3>
+          <div class="row"><div><div class="name">Střih</div><div class="meta">45–60 min</div></div><div class="price">750 Kč</div></div>
+          <div class="row"><div><div class="name">Střih + Vousy</div><div class="meta">75–90 min</div></div><div class="price">1 300 Kč</div></div>
+          <div class="row"><div><div class="name">Vousy</div><div class="meta">30–45 min</div></div><div class="price">600 Kč</div></div>
+          <div class="row"><div><div class="name">Střih + Péče o pleť</div><div class="meta">75–90 min</div></div><div class="price">1 300 Kč</div></div>
+          <div class="row"><div><div class="name">Kompletní péče</div><div class="meta">105–120 min</div></div><div class="price">1 700 Kč</div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ╔════════════ Phone — Portfolio ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>PORTFOLIO</b></div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="port-m container-m">
+        <div class="head">
+          <div class="eyebrow">— Portfolio</div>
+          <h2 class="display-l-m" style="margin-top:8px">Práce z křesla</h2>
+          <p class="body-sm-m" style="margin-top:8px">Galerie se připravuje. Sleduj nás na Instagramu.</p>
+        </div>
+        <div class="grid">
+          <div class="cell tall"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell tall"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ╔════════════ Phone — Kontakt ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>KONTAKT</b></div>
+    <div class="phone-screen">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <section class="kontakt-m container-m">
+        <div class="head">
+          <div class="eyebrow">— Kontakt</div>
+          <h2 class="display-l-m" style="margin-top:8px">Najdete nás</h2>
+        </div>
+        <address style="font-style:normal">
+          <div class="addr">Minská 98<br/>Brno-Žabovřesky</div>
+          <div class="addr-meta">616 00 · vchod z ulice Minská</div>
+        </address>
+        <div class="links">
+          <a href="mailto:[email protected]"><span>Email</span><span>[email protected]</span></a>
+          <a href="https://instagram.com/_tomsbarbershop_"><span>Instagram</span><span>@_tomsbarbershop_ ↗</span></a>
+          <a href="https://mapy.cz/s/dogudoreka"><span>Mapy</span><span>Otevřít trasu ↗</span></a>
+        </div>
+        <div class="map" aria-hidden="true"></div>
+        <div class="parking">Parkování: modrá zóna na Minské nebo Doležalově.</div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ╔════════════ Phone — Footer ════════════╗ -->
+  <div class="phone">
+    <div class="phone-tag"><b>FOOTER</b></div>
+    <div class="phone-screen" style="height: auto; padding-bottom: 0">
+      <div class="phone-status"><span>9:41</span><span class="icons">●●●  ⌬  ▮▮▮</span></div>
+      <div style="height: 360px; display: grid; place-items: center; color: var(--fg-muted); font-size: 11px; letter-spacing: .2em; text-transform: uppercase">— konec stránky —</div>
+      <footer class="footer-m">
+        <div class="stripe"></div>
+        <div class="foot">
+          <div class="brand-mark">Tom's <span style="color:var(--fg-muted);font-style:normal;font-weight:400">Barbershop</span></div>
+          <div>© 2024–2026 · Všechna práva vyhrazena</div>
+          <div>Brno · CZ</div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tom's Barbershop — GSAP animations + dodging hairs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<!-- GSAP + plugins (free since GSAP 3.13) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrambleTextPlugin.min.js"></script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #070B14;
+    --fg: #F1ECDC;
+    --fg-dim: #f1ecdcb3;
+    --fg-muted: #f1ecdc7a;
+    --accent: #E0C49C;
+    --accent-fg: #070B14;
+    --rule: #f1ecdc24;
+    --display: 'Bodoni Moda', serif;
+    --body: 'Inter Tight', system-ui, sans-serif;
+  }
+  html, body {
+    background: #15171c; color: #cfd2d8;
+    font-family: var(--body); -webkit-font-smoothing: antialiased; line-height: 1.55;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* Page chrome */
+  .page-head { padding: 32px 32px 0; max-width: 1400px; margin: 0 auto; }
+  .page-head h1 { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 32px; color: #fff; letter-spacing: -.02em; }
+  .page-head p { color: #999; max-width: 70ch; margin-top: 6px; font-size: 14px; }
+  .page-head code { background: #1f2128; padding: 2px 6px; border-radius: 3px; font-size: 12px; color: var(--accent); }
+  .lab-bar {
+    background: #050810; color: #aab; padding: 12px 20px;
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    border-bottom: 1px solid #ffffff14;
+  }
+  .lab-bar strong { color: var(--accent); letter-spacing: .15em; }
+  .lab-bar em { font-style: normal; color: #888; }
+  .frame { max-width: 1280px; margin: 28px auto 0; border-radius: 6px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0,0,0,.7), 0 0 0 1px #ffffff10; }
+  .replay {
+    background: #ffffff14; color: #fff; border: 1px solid #ffffff22; border-radius: 999px;
+    padding: 6px 14px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  }
+  .replay:hover { background: #ffffff24; }
+
+  /* Hero shell */
+  .hero {
+    position: relative; isolation: isolate;
+    background: var(--bg); color: var(--fg);
+    height: 720px; padding: 16px 64px 28px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+  .hero .top { display: flex; justify-content: space-between; padding: 14px 0; flex-shrink: 0; position: relative; z-index: 5; }
+  .hero .rule { height: 1px; background: var(--rule); flex-shrink: 0; position: relative; z-index: 5; }
+  .hero .stack { flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 32px 0; position: relative; z-index: 4; }
+  .hero .meta-row { display: grid; grid-auto-flow: column; gap: 24px; padding-top: 16px; text-align: center; flex-shrink: 0; position: relative; z-index: 5; justify-content: space-between; }
+  .corner { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-muted); }
+  .open-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 8px; box-shadow: 0 0 0 4px #E0C49C1f; }
+  .eyebrow { font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--fg-muted); font-weight: 500; }
+
+  /* Heading wrap (slash line + text) */
+  .head-wrap { position: relative; display: inline-block; padding: 0 24px; }
+  .display-xl {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 168px; line-height: .9; letter-spacing: -.045em; display: inline-block;
+  }
+  .display-sub { font-family: var(--display); font-weight: 400; font-size: 22px; letter-spacing: .4em; text-transform: uppercase; color: var(--fg-dim); }
+  .body { font-size: 17px; line-height: 1.65; color: var(--fg-dim); max-width: 56ch; margin: 28px auto 28px; }
+  .pillars { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-dim); justify-content: center; margin-top: 28px; }
+  .pillars span { position: relative; padding-right: 28px; }
+  .pillars span::after { content: '·'; position: absolute; right: 6px; color: var(--fg-muted); }
+  .pillars span:last-child { padding-right: 0; }
+  .pillars span:last-child::after { content: ''; }
+  .ctas { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 50px; padding: 0 28px; min-width: 160px;
+    font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+    border: 1px solid currentColor; border-radius: 999px;
+    transition: filter .2s;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .btn-ghost { background: transparent; color: var(--fg); }
+  .btn-arrow::after { content: " →"; margin-left: 4px; }
+
+  /* Slash line (locked: horizontal, Slash-Emerge A) */
+  .slash-line {
+    position: absolute;
+    pointer-events: none;
+    background: var(--accent);
+    box-shadow: 0 0 14px var(--accent), 0 0 32px #E0C49C66;
+    left: 0; right: 0; top: 50%; height: 2px;
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left center;
+  }
+  .slash-line::after {
+    content: '';
+    position: absolute; top: -4px; right: 0; width: 18px; height: calc(100% + 8px);
+    background: radial-gradient(ellipse, #fff 0%, var(--accent) 40%, transparent 75%);
+    filter: blur(3px);
+  }
+
+  /* Hair background — wrap holds dodge offset, inner has CSS fall animation */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse 70% 55% at 50% 45%, #E0C49C18 0%, transparent 65%);
+  }
+  .hairs { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .hair-wrap {
+    position: absolute;
+    top: -80px; left: var(--x, 50%);
+    width: 18px; height: 80px;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .hair {
+    display: block; width: 100%; height: 100%;
+    color: #E8DFC8; opacity: 0;
+    animation: hair-drift var(--dur, 14s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    transform-origin: 50% 0;
+  }
+  .hair svg { width: 100%; height: 100%; }
+  @keyframes hair-drift {
+    0%   { transform: translateY(0)     translateX(0)              rotate(0);   opacity: 0; }
+    8%   { opacity: var(--op, .45); }
+    50%  { opacity: var(--op, .45); }
+    92%  { opacity: var(--op, .45); }
+    100% { transform: translateY(840px) translateX(var(--drift, 30px)) rotate(var(--spin, 220deg)); opacity: 0; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* SplitText helper — make sure split children inherit display correctly */
+  .split-line { display: block; transform-origin: left top; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>GSAP animations + dodging hairs</h1>
+  <p>Three text-animation variants. Hairs <strong>dodge the mouse</strong> — move the cursor across each hero, hairs flee the cursor with a soft elastic return. Heading uses the locked Slash-Emerge A. Body text differs per variant. Click ↻ to replay the entrance.</p>
+</div>
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+<!-- ║  Variant 1 — Body: word stagger fade-up (semantic chunks)        ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+<div style="max-width:1280px;margin:48px auto 0;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:16px">
+  <div class="lab-bar" style="flex:1"><strong>TEXT · 1</strong><span><em>Body: word-by-word fade-up</em> · <code style="font-family:ui-monospace;font-size:11px;background:#1a1d23;padding:2px 6px;border-radius:3px;color:var(--accent)">SplitText({type:'words'}) → opacity 0→1, y 12→0, stagger 30ms, power2.out</code></span></div>
+  <button class="replay" data-target="hero-1">↻ replay</button>
+</div>
+<div class="frame">
+  <section class="hero" id="hero-1" data-text-anim="words">
+    <div class="hairs" aria-hidden="true">
+      <span class="hair-wrap" style="--x:6%"><span class="hair" style="--dur:14s; --delay:0s;   --drift:-30px; --spin:200deg; --op:.45"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 2 18 9 36 Q 16 54 9 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:14%"><span class="hair" style="--dur:18s; --delay:3s;   --drift:60px;  --spin:-180deg;--op:.35"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 16 22 9 40 Q 2 60 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:22%"><span class="hair" style="--dur:16s; --delay:6s;   --drift:-50px; --spin:260deg; --op:.55"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"><path d="M 9 2 Q 4 22 9 42 Q 14 64 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:30%"><span class="hair" style="--dur:22s; --delay:1.5s; --drift:40px;  --spin:-220deg;--op:.4"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 14 18 9 38 Q 4 58 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:38%"><span class="hair" style="--dur:13s; --delay:8s;   --drift:-20px; --spin:140deg; --op:.5"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"><path d="M 9 2 Q 2 22 9 40 Q 16 60 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:46%"><span class="hair" style="--dur:20s; --delay:4s;   --drift:70px;  --spin:-160deg;--op:.35"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 16 24 9 44 Q 2 62 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:54%"><span class="hair" style="--dur:15s; --delay:2s;   --drift:-60px; --spin:240deg; --op:.5"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"><path d="M 9 2 Q 4 20 9 38 Q 14 56 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:62%"><span class="hair" style="--dur:17s; --delay:10s;  --drift:30px;  --spin:-200deg;--op:.42"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 14 22 9 42 Q 4 60 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:70%"><span class="hair" style="--dur:21s; --delay:5s;   --drift:-40px; --spin:280deg; --op:.4"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 2 24 9 42 Q 16 62 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:78%"><span class="hair" style="--dur:14s; --delay:7s;   --drift:50px;  --spin:-240deg;--op:.55"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"><path d="M 9 2 Q 16 18 9 38 Q 2 58 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:86%"><span class="hair" style="--dur:19s; --delay:11s;  --drift:-30px; --spin:180deg; --op:.38"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 4 22 9 40 Q 14 60 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:94%"><span class="hair" style="--dur:16s; --delay:0.5s; --drift:-50px; --spin:-180deg;--op:.45"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 14 24 9 44 Q 4 64 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:50%"><span class="hair" style="--dur:25s; --delay:9s;   --drift:80px;  --spin:300deg; --op:.32"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 2 20 9 38 Q 16 56 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:18%"><span class="hair" style="--dur:23s; --delay:12s;  --drift:-70px; --spin:-280deg;--op:.36"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 16 22 9 42 Q 2 62 12 78"/></svg></span></span>
+    </div>
+    <div class="rule"></div>
+    <div class="top">
+      <div class="corner"><span class="open-dot"></span>Otevřeno · do 19:00</div>
+      <div class="corner">Minská 98 · Brno</div>
+    </div>
+    <div class="rule"></div>
+    <div class="stack">
+      <div class="eyebrow" style="margin-bottom:18px">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+      <div class="head-wrap">
+        <span class="slash-line" aria-hidden="true"></span>
+        <h1 class="display-xl">Tom's</h1>
+      </div>
+      <div class="display-sub" style="margin-top:8px">Barbershop</div>
+      <p class="body">Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách.</p>
+      <div class="ctas">
+        <a class="btn btn-primary btn-arrow" href="#">Rezervovat</a>
+        <a class="btn btn-ghost" href="#services">Ceník</a>
+      </div>
+    </div>
+    <div class="rule" style="margin-top:32px"></div>
+    <div class="meta-row">
+      <div class="corner">Po — Pá  ·  09:00 — 19:00</div>
+      <div class="corner">@_tomsbarbershop_</div>
+      <div class="corner">[email protected]</div>
+    </div>
+  </section>
+</div>
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+<!-- ║  Variant 2 — Body: line-by-line rotate-in (Textify spec)         ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+<div style="max-width:1280px;margin:64px auto 0;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:16px">
+  <div class="lab-bar" style="flex:1"><strong>TEXT · 2</strong><span><em>Body: line-by-line rotate</em> · <code style="font-family:ui-monospace;font-size:11px;background:#1a1d23;padding:2px 6px;border-radius:3px;color:var(--accent)">SplitText({type:'lines'}) → rotate 30→0, opacity 0→1, stagger 75ms, 700ms, power2.out</code></span></div>
+  <button class="replay" data-target="hero-2">↻ replay</button>
+</div>
+<div class="frame">
+  <section class="hero" id="hero-2" data-text-anim="lines">
+    <div class="hairs" aria-hidden="true">
+      <span class="hair-wrap" style="--x:6%"><span class="hair" style="--dur:14s; --delay:0s;   --drift:-30px; --spin:200deg; --op:.45"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 2 18 9 36 Q 16 54 9 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:14%"><span class="hair" style="--dur:18s; --delay:3s;   --drift:60px;  --spin:-180deg;--op:.35"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 16 22 9 40 Q 2 60 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:22%"><span class="hair" style="--dur:16s; --delay:6s;   --drift:-50px; --spin:260deg; --op:.55"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"><path d="M 9 2 Q 4 22 9 42 Q 14 64 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:30%"><span class="hair" style="--dur:22s; --delay:1.5s; --drift:40px;  --spin:-220deg;--op:.4"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 14 18 9 38 Q 4 58 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:38%"><span class="hair" style="--dur:13s; --delay:8s;   --drift:-20px; --spin:140deg; --op:.5"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"><path d="M 9 2 Q 2 22 9 40 Q 16 60 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:46%"><span class="hair" style="--dur:20s; --delay:4s;   --drift:70px;  --spin:-160deg;--op:.35"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 16 24 9 44 Q 2 62 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:54%"><span class="hair" style="--dur:15s; --delay:2s;   --drift:-60px; --spin:240deg; --op:.5"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"><path d="M 9 2 Q 4 20 9 38 Q 14 56 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:62%"><span class="hair" style="--dur:17s; --delay:10s;  --drift:30px;  --spin:-200deg;--op:.42"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 14 22 9 42 Q 4 60 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:70%"><span class="hair" style="--dur:21s; --delay:5s;   --drift:-40px; --spin:280deg; --op:.4"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 2 24 9 42 Q 16 62 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:78%"><span class="hair" style="--dur:14s; --delay:7s;   --drift:50px;  --spin:-240deg;--op:.55"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"><path d="M 9 2 Q 16 18 9 38 Q 2 58 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:86%"><span class="hair" style="--dur:19s; --delay:11s;  --drift:-30px; --spin:180deg; --op:.38"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 4 22 9 40 Q 14 60 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:94%"><span class="hair" style="--dur:16s; --delay:0.5s; --drift:-50px; --spin:-180deg;--op:.45"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 14 24 9 44 Q 4 64 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:50%"><span class="hair" style="--dur:25s; --delay:9s;   --drift:80px;  --spin:300deg; --op:.32"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 2 20 9 38 Q 16 56 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:18%"><span class="hair" style="--dur:23s; --delay:12s;  --drift:-70px; --spin:-280deg;--op:.36"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 16 22 9 42 Q 2 62 12 78"/></svg></span></span>
+    </div>
+    <div class="rule"></div>
+    <div class="top">
+      <div class="corner"><span class="open-dot"></span>Otevřeno · do 19:00</div>
+      <div class="corner">Minská 98 · Brno</div>
+    </div>
+    <div class="rule"></div>
+    <div class="stack">
+      <div class="eyebrow" style="margin-bottom:18px">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+      <div class="head-wrap">
+        <span class="slash-line" aria-hidden="true"></span>
+        <h1 class="display-xl">Tom's</h1>
+      </div>
+      <div class="display-sub" style="margin-top:8px">Barbershop</div>
+      <p class="body">Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách.</p>
+      <div class="ctas">
+        <a class="btn btn-primary btn-arrow" href="#">Rezervovat</a>
+        <a class="btn btn-ghost" href="#services">Ceník</a>
+      </div>
+    </div>
+    <div class="rule" style="margin-top:32px"></div>
+    <div class="meta-row">
+      <div class="corner">Po — Pá  ·  09:00 — 19:00</div>
+      <div class="corner">@_tomsbarbershop_</div>
+      <div class="corner">[email protected]</div>
+    </div>
+  </section>
+</div>
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+<!-- ║  Variant 3 — Body: char cascade + 3D                             ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+<div style="max-width:1280px;margin:64px auto 0;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:16px">
+  <div class="lab-bar" style="flex:1"><strong>TEXT · 3 (LOCKED)</strong><span><em>Body: simple fade-up from below</em> · <code style="font-family:ui-monospace;font-size:11px;background:#1a1d23;padding:2px 6px;border-radius:3px;color:var(--accent)">y 24→0, opacity 0→1, 550ms, power3.out</code></span></div>
+  <button class="replay" data-target="hero-3">↻ replay</button>
+</div>
+<div class="frame">
+  <section class="hero" id="hero-3" data-text-anim="chars">
+    <div class="hairs" aria-hidden="true">
+      <span class="hair-wrap" style="--x:6%"><span class="hair" style="--dur:14s; --delay:0s;   --drift:-30px; --spin:200deg; --op:.45"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 2 18 9 36 Q 16 54 9 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:14%"><span class="hair" style="--dur:18s; --delay:3s;   --drift:60px;  --spin:-180deg;--op:.35"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 16 22 9 40 Q 2 60 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:22%"><span class="hair" style="--dur:16s; --delay:6s;   --drift:-50px; --spin:260deg; --op:.55"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"><path d="M 9 2 Q 4 22 9 42 Q 14 64 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:30%"><span class="hair" style="--dur:22s; --delay:1.5s; --drift:40px;  --spin:-220deg;--op:.4"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 14 18 9 38 Q 4 58 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:38%"><span class="hair" style="--dur:13s; --delay:8s;   --drift:-20px; --spin:140deg; --op:.5"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"><path d="M 9 2 Q 2 22 9 40 Q 16 60 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:46%"><span class="hair" style="--dur:20s; --delay:4s;   --drift:70px;  --spin:-160deg;--op:.35"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 16 24 9 44 Q 2 62 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:54%"><span class="hair" style="--dur:15s; --delay:2s;   --drift:-60px; --spin:240deg; --op:.5"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"><path d="M 9 2 Q 4 20 9 38 Q 14 56 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:62%"><span class="hair" style="--dur:17s; --delay:10s;  --drift:30px;  --spin:-200deg;--op:.42"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 14 22 9 42 Q 4 60 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:70%"><span class="hair" style="--dur:21s; --delay:5s;   --drift:-40px; --spin:280deg; --op:.4"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 2 24 9 42 Q 16 62 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:78%"><span class="hair" style="--dur:14s; --delay:7s;   --drift:50px;  --spin:-240deg;--op:.55"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"><path d="M 9 2 Q 16 18 9 38 Q 2 58 12 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:86%"><span class="hair" style="--dur:19s; --delay:11s;  --drift:-30px; --spin:180deg; --op:.38"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 4 22 9 40 Q 14 60 7 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:94%"><span class="hair" style="--dur:16s; --delay:0.5s; --drift:-50px; --spin:-180deg;--op:.45"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"><path d="M 9 2 Q 14 24 9 44 Q 4 64 11 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:50%"><span class="hair" style="--dur:25s; --delay:9s;   --drift:80px;  --spin:300deg; --op:.32"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linecap="round"><path d="M 9 2 Q 2 20 9 38 Q 16 56 8 78"/></svg></span></span>
+      <span class="hair-wrap" style="--x:18%"><span class="hair" style="--dur:23s; --delay:12s;  --drift:-70px; --spin:-280deg;--op:.36"><svg viewBox="0 0 18 80" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M 9 2 Q 16 22 9 42 Q 2 62 12 78"/></svg></span></span>
+    </div>
+    <div class="rule"></div>
+    <div class="top">
+      <div class="corner"><span class="open-dot"></span>Otevřeno · do 19:00</div>
+      <div class="corner">Minská 98 · Brno</div>
+    </div>
+    <div class="rule"></div>
+    <div class="stack">
+      <div class="eyebrow" style="margin-bottom:18px">EST. 2024 · BRNO-ŽABOVŘESKY</div>
+      <div class="head-wrap">
+        <span class="slash-line" aria-hidden="true"></span>
+        <h1 class="display-xl">Tom's</h1>
+      </div>
+      <div class="display-sub" style="margin-top:8px">Barbershop</div>
+      <p class="body">Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách.</p>
+      <div class="ctas">
+        <a class="btn btn-primary btn-arrow" href="#">Rezervovat</a>
+        <a class="btn btn-ghost" href="#services">Ceník</a>
+      </div>
+    </div>
+    <div class="rule" style="margin-top:32px"></div>
+    <div class="meta-row">
+      <div class="corner">Po — Pá  ·  09:00 — 19:00</div>
+      <div class="corner">@_tomsbarbershop_</div>
+      <div class="corner">[email protected]</div>
+    </div>
+  </section>
+</div>
+
+<div style="height: 80px"></div>
+
+<script>
+  /* ════════════════════════════════════════════════════════════════
+     GSAP plugin registration
+     ════════════════════════════════════════════════════════════════ */
+  gsap.registerPlugin(SplitText, ScrambleTextPlugin);
+
+  /* ════════════════════════════════════════════════════════════════
+     Hero entrance timeline (locked Slash-Emerge A heading)
+     ════════════════════════════════════════════════════════════════ */
+  function buildTimeline(hero) {
+    const variant = hero.dataset.textAnim;
+    const tl = gsap.timeline({ paused: true });
+
+    // Top band + eyebrow
+    tl.from(hero.querySelector('.top'),     { autoAlpha: 0, duration: 0.35, ease: 'power2.out' }, 0);
+    tl.from(hero.querySelector('.eyebrow'), { autoAlpha: 0, duration: 0.38, ease: 'power2.out' }, 0.15);
+
+    // SLASH LINE — draws left to right, then later sweeps off the right
+    tl.fromTo(hero.querySelector('.slash-line'),
+      { scaleX: 0, transformOrigin: 'left center' },
+      { scaleX: 1, duration: 0.34, ease: 'expo.out' },
+      0.35);
+
+    // HEADING — vertical emerge from centerline (locked Slash-Emerge A)
+    tl.fromTo(hero.querySelector('.display-xl'),
+      { clipPath: 'inset(50% 0 50% 0)' },
+      { clipPath: 'inset(0% 0 0% 0)', duration: 0.6, ease: 'power3.out' },
+      0.7);
+
+    // Slash fades out, sweeping right
+    tl.to(hero.querySelector('.slash-line'),
+      { scaleX: 0, autoAlpha: 0, duration: 0.38, ease: 'expo.in', transformOrigin: 'right center' },
+      0.9);
+
+    // Sub
+    tl.from(hero.querySelector('.display-sub'), { autoAlpha: 0, duration: 0.4, ease: 'power2.out' }, 1.1);
+
+    // BODY — variant-specific
+    const bodyEl = hero.querySelector('.body');
+    if (variant === 'words') {
+      const split = new SplitText(bodyEl, { type: 'words' });
+      tl.from(split.words, {
+        autoAlpha: 0, y: 12, duration: 0.5, stagger: 0.03, ease: 'power2.out'
+      }, 1.25);
+    } else if (variant === 'lines') {
+      const split = new SplitText(bodyEl, { type: 'lines', linesClass: 'split-line' });
+      tl.from(split.lines, {
+        autoAlpha: 0, rotate: 30, duration: 0.7, stagger: 0.075,
+        ease: 'power2.out', transformOrigin: 'left top'
+      }, 1.25);
+    } else { // simple fade-up — whole paragraph rises from below as one unit
+      tl.from(bodyEl, {
+        autoAlpha: 0, y: 24, duration: 0.55, ease: 'power3.out'
+      }, 1.25);
+    }
+
+    // CTAs rise-up
+    tl.from(hero.querySelector('.btn-primary'), { autoAlpha: 0, y: 20, duration: 0.32, ease: 'power3.out' }, 1.5);
+    tl.from(hero.querySelector('.btn-ghost'),   { autoAlpha: 0, y: 20, duration: 0.32, ease: 'power3.out' }, 1.56);
+
+    // Pillars + bottom band
+    tl.from(hero.querySelector('.pillars'),  { autoAlpha: 0, duration: 0.4,  ease: 'power2.out' }, 1.7);
+    tl.from(hero.querySelector('.meta-row'), { autoAlpha: 0, duration: 0.35, ease: 'power2.out' }, 1.85);
+
+    return tl;
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     Hair dodge — hairs flee the cursor with elastic return
+     ════════════════════════════════════════════════════════════════ */
+  function setupHairDodge(hero) {
+    const wraps = hero.querySelectorAll('.hair-wrap');
+    if (!wraps.length) return;
+
+    const handlers = Array.from(wraps).map(wrap => ({
+      wrap,
+      setX:   gsap.quickTo(wrap, 'x',        { duration: 0.55, ease: 'power3.out' }),
+      setY:   gsap.quickTo(wrap, 'y',        { duration: 0.55, ease: 'power3.out' }),
+      setRot: gsap.quickTo(wrap, 'rotation', { duration: 0.7,  ease: 'power3.out' }),
+    }));
+
+    let mx = -9999, my = -9999, scheduled = false;
+
+    function tick() {
+      scheduled = false;
+      const heroRect = hero.getBoundingClientRect();
+      const localMx  = mx - heroRect.left;
+      const localMy  = my - heroRect.top;
+      const RADIUS   = 140;
+      const FORCE    = 95;
+
+      // batch reads
+      const positions = handlers.map(({ wrap }) => {
+        const r = wrap.getBoundingClientRect();
+        return {
+          cx: r.left + r.width / 2 - heroRect.left,
+          cy: r.top  + r.height / 2 - heroRect.top
+        };
+      });
+
+      // batch writes via quickTo
+      handlers.forEach((h, i) => {
+        const { cx, cy } = positions[i];
+        const dx = cx - localMx;
+        const dy = cy - localMy;
+        const dist = Math.hypot(dx, dy);
+        if (dist < RADIUS) {
+          const factor = Math.pow(1 - dist / RADIUS, 1.4);
+          const force  = FORCE * factor;
+          const angle  = Math.atan2(dy, dx);
+          h.setX(Math.cos(angle) * force);
+          h.setY(Math.sin(angle) * force);
+          h.setRot(Math.cos(angle) * 30 * factor);
+        } else {
+          h.setX(0); h.setY(0); h.setRot(0);
+        }
+      });
+    }
+
+    function schedule() {
+      if (!scheduled) { scheduled = true; requestAnimationFrame(tick); }
+    }
+
+    hero.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; schedule(); });
+    hero.addEventListener('mouseleave', ()    => { mx = -9999; my = -9999;       schedule(); });
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     Init all heroes
+     ════════════════════════════════════════════════════════════════ */
+  const timelines = new Map();
+
+  document.fonts.ready.then(() => {
+    document.querySelectorAll('.hero').forEach(hero => {
+      setupHairDodge(hero);
+      const tl = buildTimeline(hero);
+      timelines.set(hero.id, tl);
+      tl.play();
+    });
+  });
+
+  document.querySelectorAll('.replay').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.target;
+      const tl = timelines.get(id);
+      if (!tl) return;
+      // For SplitText, kill+rebuild ensures fresh splits
+      tl.kill();
+      const hero = document.getElementById(id);
+      // Revert any existing splits attached to body
+      const body = hero.querySelector('.body');
+      if (SplitText.isSplit && SplitText.isSplit(body)) {
+        SplitText.create(body).revert();
+      }
+      const fresh = buildTimeline(hero);
+      timelines.set(id, fresh);
+      fresh.play();
+    });
+  });
+</script>
+
+</body>
+</html>
