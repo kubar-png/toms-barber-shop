@@ -12,12 +12,13 @@ export function Portfolio() {
           </p>
         </div>
         <div className="port-grid">
-          <div className="port-cell port-c1" />
-          <div className="port-cell port-c2" />
-          <div className="port-cell port-c3" />
-          <div className="port-cell port-c4" />
-          <div className="port-cell port-c5" />
-          <div className="port-cell port-c6" />
+          {([1, 2, 3, 4, 5, 6] as const).map((n, i) => (
+            <div
+              key={n}
+              className={`port-cell port-c${n}`}
+              style={{ ["--cell" as string]: i } as React.CSSProperties}
+            />
+          ))}
         </div>
       </div>
     </section>

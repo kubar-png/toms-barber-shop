@@ -51,7 +51,7 @@ function PriceList({
       <div className="col-eye">— Ceník</div>
       <h3>{barber}</h3>
       {services.map((s, i) => (
-        <div key={i} className="cenik-row">
+        <div key={i} className="cenik-row" style={{ ["--row" as string]: i } as React.CSSProperties}>
           <div>
             <div className="cenik-name">{s.name}</div>
             <div className="cenik-desc">{s.desc}</div>

@@ -9,6 +9,11 @@
   --accent: #E0C49C;
   --accent-fg: #070B14;
   --rule: #f1ecdc24;
+
+  /* Motion */
+  --ease-out-cubic: cubic-bezier(.215, .61, .355, 1);
+  --ease-out-quart: cubic-bezier(.165, .84, .44, 1);
+  --ease-out-expo:  cubic-bezier(.19, 1, .22, 1);
 }
 
 @theme inline {
@@ -487,6 +492,105 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ════════════════════════════════════════════════════════
+   Scroll-reveal — sections fade-up when entering viewport
+   ════════════════════════════════════════════════════════ */
+.section .eyebrow,
+.section .display-l,
+.section .body-text,
+.section .quote,
+.section .team,
+.section .cenik-col,
+.section .cenik-row,
+.section .port-cell,
+.section address,
+.section .contact-links,
+.section .map-frame,
+.section .parking,
+.site-footer .barber-stripe,
+.site-footer .foot-row {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity .7s var(--ease-out-cubic),
+    transform .7s var(--ease-out-cubic);
+}
+
+.section.in-view .eyebrow,
+.section.in-view .display-l,
+.section.in-view .body-text,
+.section.in-view .quote,
+.section.in-view .team,
+.section.in-view .cenik-col,
+.section.in-view .cenik-row,
+.section.in-view .port-cell,
+.section.in-view address,
+.section.in-view .contact-links,
+.section.in-view .map-frame,
+.section.in-view .parking,
+.site-footer.in-view .barber-stripe,
+.site-footer.in-view .foot-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Per-element delays inside a section */
+.section.in-view .eyebrow      { transition-delay: 0ms; }
+.section.in-view .display-l    { transition-delay: 100ms; }
+.section.in-view .body-text    { transition-delay: 220ms; }
+.section.in-view .quote        { transition-delay: 200ms; }
+.section.in-view .team         { transition-delay: 320ms; }
+.section.in-view .map-frame    { transition-delay: 380ms; }
+.section.in-view .parking      { transition-delay: 420ms; }
+.section.in-view address       { transition-delay: 220ms; }
+.section.in-view .contact-links{ transition-delay: 280ms; }
+
+/* Cenik columns + per-row stagger */
+.section.in-view .cenik-col:first-of-type  { transition-delay: 240ms; }
+.section.in-view .cenik-col:last-of-type   { transition-delay: 320ms; }
+.section.in-view .cenik-col:first-of-type  .cenik-row { transition: opacity .55s var(--ease-out-cubic), transform .55s var(--ease-out-cubic); transition-delay: calc(280ms + 60ms * var(--row, 0)); }
+.section.in-view .cenik-col:last-of-type   .cenik-row { transition: opacity .55s var(--ease-out-cubic), transform .55s var(--ease-out-cubic); transition-delay: calc(360ms + 60ms * var(--row, 0)); }
+
+/* Portfolio cells — diagonal stagger */
+.section.in-view .port-cell { transition-delay: calc(220ms + 70ms * var(--cell, 0)); }
+
+/* Footer */
+.site-footer.in-view .barber-stripe { transition-delay: 0ms; }
+.site-footer.in-view .foot-row      { transition-delay: 180ms; }
+
+/* ════════════════════════════════════════════════════════
+   Hover micro-interactions
+   ════════════════════════════════════════════════════════ */
+.cenik-row {
+  border-radius: 4px;
+  padding: 14px 8px;
+  margin: 0 -8px;
+  transition: background-color .2s ease;
+}
+.cenik-row:hover { background-color: #E0C49C0d; }
+
+.port-cell {
+  transition: transform .25s var(--ease-out-quart), border-color .25s ease, background .25s ease;
+  cursor: pointer;
+}
+.port-cell:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.contact-links a span:last-child::after {
+  display: inline-block;
+  transition: transform .22s var(--ease-out-quart);
+}
+.contact-links a:hover span:last-child::after {
+  transform: translate(3px, -3px);
+}
+.contact-links a {
+  transition: color .2s ease, border-color .2s ease;
+}
+.contact-links a:hover { color: var(--accent); }
+.contact-links a:hover span:first-child { color: var(--fg-dim); }
+
+/* ════════════════════════════════════════════════════════
    Reduced motion
    ════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
@@ -494,5 +598,23 @@ a { color: inherit; text-decoration: none; }
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .section .eyebrow,
+  .section .display-l,
+  .section .body-text,
+  .section .quote,
+  .section .team,
+  .section .cenik-col,
+  .section .cenik-row,
+  .section .port-cell,
+  .section address,
+  .section .contact-links,
+  .section .map-frame,
+  .section .parking,
+  .site-footer .barber-stripe,
+  .site-footer .foot-row {
+    opacity: 1;
+    transform: none;
   }
 }
