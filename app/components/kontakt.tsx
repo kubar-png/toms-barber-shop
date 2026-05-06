@@ -36,7 +36,7 @@ export function Kontakt() {
                 <span>@_tomsbarbershop_</span>
               </a>
               <a
-                href="https://mapy.cz/s/dogudoreka"
+                href="https://www.google.com/maps/dir/?api=1&destination=Minsk%C3%A1+98%2C+Brno-%C5%BDabov%C5%99esky"
                 target="_blank"
                 rel="noreferrer"
               >
