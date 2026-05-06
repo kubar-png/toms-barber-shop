@@ -513,10 +513,10 @@ body.reveal-ready .section .parking,
 body.reveal-ready .site-footer .barber-stripe,
 body.reveal-ready .site-footer .foot-row {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(28px);
   transition:
-    opacity .7s var(--ease-out-cubic),
-    transform .7s var(--ease-out-cubic);
+    opacity .8s var(--ease-out-cubic),
+    transform .8s var(--ease-out-cubic);
 }
 
 body.reveal-ready .section.in-view .eyebrow,

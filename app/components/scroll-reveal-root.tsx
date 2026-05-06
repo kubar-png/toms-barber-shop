@@ -22,12 +22,14 @@ export function ScrollRevealRoot() {
     // so any JS / hydration failure leaves content visible by default).
     document.body.classList.add("reveal-ready");
 
+    let observedAny = false;
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("in-view");
             io.unobserve(entry.target);
+            observedAny = true;
           }
         });
       },
@@ -36,10 +38,15 @@ export function ScrollRevealRoot() {
 
     targets.forEach((el) => io.observe(el));
 
-    // Safety net — if anything goes wrong, force-reveal everything after 1.5s.
+    // Safety net — if the observer never fired (broken environment), drop
+    // reveal-ready so content shows naturally instead of staying hidden.
+    // We do NOT mass-add .in-view here: that would skip the animation for
+    // sections the user later scrolls to.
     const safety = window.setTimeout(() => {
-      targets.forEach((el) => el.classList.add("in-view"));
-    }, 1500);
+      if (!observedAny) {
+        document.body.classList.remove("reveal-ready");
+      }
+    }, 2500);
 
     return () => {
       window.clearTimeout(safety);
