@@ -438,7 +438,16 @@ a { color: inherit; text-decoration: none; }
 .address {
   font-family: var(--font-display), serif; font-style: italic; font-weight: 700;
   font-size: clamp(28px, 3.6vw, 48px); line-height: 1.1; margin-bottom: 12px;
+  display: inline-block;
 }
+.address-link {
+  display: inline-block;
+  color: var(--fg);
+  text-decoration: none;
+  transition: color .25s ease;
+}
+.address-link:hover { color: var(--accent); }
+.address-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 2px; }
 .address-meta { font-size: 14px; color: var(--fg-dim); margin-bottom: 28px; }
 .contact-links { display: grid; gap: 4px; margin-top: 16px; }
 .contact-links a {

@@ -15,11 +15,19 @@ export function Kontakt() {
         <div className="kontakt-grid">
           <div>
             <address style={{ fontStyle: "normal" }}>
-              <div className="address">
-                Minská 98
-                <br />
-                Brno-Žabovřesky
-              </div>
+              <a
+                href="https://www.google.com/maps/place/Minsk%C3%A1+98%2C+616+00+Brno-%C5%BDabov%C5%99esky"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="address-link"
+                aria-label="Otevřít Minská 98, Brno-Žabovřesky v Google Mapách"
+              >
+                <span className="address">
+                  Minská 98
+                  <br />
+                  Brno-Žabovřesky
+                </span>
+              </a>
               <div className="address-meta">616 00 · vchod z ulice Minská</div>
             </address>
             <div className="contact-links">
