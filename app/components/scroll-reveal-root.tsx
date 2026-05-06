@@ -18,6 +18,10 @@ export function ScrollRevealRoot() {
       return;
     }
 
+    // Enable reveal mode (CSS hides content only when this class is present,
+    // so any JS / hydration failure leaves content visible by default).
+    document.body.classList.add("reveal-ready");
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -27,11 +31,20 @@ export function ScrollRevealRoot() {
           }
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+      { rootMargin: "0px 0px -40px 0px", threshold: 0 },
     );
 
     targets.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+
+    // Safety net — if anything goes wrong, force-reveal everything after 1.5s.
+    const safety = window.setTimeout(() => {
+      targets.forEach((el) => el.classList.add("in-view"));
+    }, 1500);
+
+    return () => {
+      window.clearTimeout(safety);
+      io.disconnect();
+    };
   }, []);
 
   return null;
