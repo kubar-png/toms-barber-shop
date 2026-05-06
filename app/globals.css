@@ -54,29 +54,32 @@ body {
 @media (max-width: 768px) {
   body { background-image: none; }
 
+  /* Halo peak centered vertically in ::before; ellipse Y-radius 75% of
+     element so gradient fades to 0 exactly at the element's top + bottom
+     edges — no hard crop at section seams. */
   .section::before {
     content: '';
     position: absolute;
     pointer-events: none;
     left: 0; right: 0;
     top: -40px;
-    height: 280px;
+    height: 260px;
     z-index: 0;
   }
   .section-inner { position: relative; z-index: 1; }
 
-  /* Each section: small halo near heading, irregular X / size / intensity */
+  /* Irregular X / size / intensity per section, peak at 50% Y */
   #about::before {
-    background: radial-gradient(ellipse 72% 100% at 38% 32%, #E0C49C34 0%, transparent 68%);
+    background: radial-gradient(ellipse 72% 75% at 38% 50%, #E0C49C34 0%, transparent 65%);
   }
   #cenik::before {
-    background: radial-gradient(ellipse 78% 100% at 62% 36%, #E0C49C2c 0%, transparent 68%);
+    background: radial-gradient(ellipse 78% 78% at 62% 50%, #E0C49C2c 0%, transparent 65%);
   }
   #portfolio::before {
-    background: radial-gradient(ellipse 68% 100% at 42% 28%, #E0C49C38 0%, transparent 65%);
+    background: radial-gradient(ellipse 68% 72% at 42% 50%, #E0C49C38 0%, transparent 65%);
   }
   #contact::before {
-    background: radial-gradient(ellipse 80% 100% at 58% 34%, #E0C49C30 0%, transparent 68%);
+    background: radial-gradient(ellipse 80% 76% at 58% 50%, #E0C49C30 0%, transparent 65%);
   }
   .section::after { display: none; content: none; }
 }
