@@ -6,6 +6,8 @@ import "leaflet/dist/leaflet.css";
 // Minská 98, Brno-Žabovřesky · approx coords (uprav podle potřeby)
 const SHOP_LAT = 49.207;
 const SHOP_LON = 16.5832;
+const GOOGLE_MAPS_URL =
+  "https://www.google.com/maps/place/Minsk%C3%A1+98%2C+616+00+Brno-%C5%BDabov%C5%99esky";
 
 export function MapDark() {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,7 +26,15 @@ export function MapDark() {
         zoomControl: false,
         scrollWheelZoom: false,
         attributionControl: true,
-        dragging: true,
+        dragging: false,
+        doubleClickZoom: false,
+        touchZoom: false,
+        keyboard: false,
+      });
+
+      // Click anywhere on the map → open the location in Google Maps
+      map.on("click", () => {
+        window.open(GOOGLE_MAPS_URL, "_blank", "noopener,noreferrer");
       });
 
       // CartoDB Dark Matter — no labels = no street names, just clean geometry
@@ -58,5 +68,19 @@ export function MapDark() {
     };
   }, []);
 
-  return <div ref={ref} className="map-canvas" aria-label="Mapa — Minská 98, Brno-Žabovřesky" />;
+  return (
+    <div
+      ref={ref}
+      className="map-canvas"
+      role="link"
+      tabIndex={0}
+      aria-label="Otevřít Minská 98, Brno-Žabovřesky v Google Mapách"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          window.open(GOOGLE_MAPS_URL, "_blank", "noopener,noreferrer");
+        }
+      }}
+    />
+  );
 }
