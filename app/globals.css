@@ -41,6 +41,17 @@ body {
     radial-gradient(ellipse 62%  9% at 76% 78%, #E0C49C13 0%, transparent 64%);
   background-repeat: no-repeat;
 }
+
+/* Spotlights need more saturation on mobile — narrower viewport, less area to spread */
+@media (max-width: 768px) {
+  body {
+    background-image:
+      radial-gradient(ellipse 90% 14% at 50% 24%, #E0C49C2e 0%, transparent 68%),
+      radial-gradient(ellipse 95% 13% at 50% 42%, #E0C49C26 0%, transparent 68%),
+      radial-gradient(ellipse 85% 16% at 50% 60%, #E0C49C30 0%, transparent 65%),
+      radial-gradient(ellipse 90% 12% at 50% 78%, #E0C49C24 0%, transparent 68%);
+  }
+}
 a { color: inherit; text-decoration: none; }
 
 /* ── Reusable atoms ────────────────────────────────────── */
@@ -110,6 +121,37 @@ a { color: inherit; text-decoration: none; }
 .pillars span::after { content: '·'; position: absolute; right: 6px; color: var(--fg-muted); }
 .pillars span:last-child { padding-right: 0; }
 .pillars span:last-child::after { content: ''; }
+
+/* On mobile — 2×2 grid with dots stacked at column midline */
+@media (max-width: 600px) {
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0;
+    row-gap: 14px;
+    align-items: center;
+  }
+  .pillars span { padding: 0; }
+  .pillars span::after { content: none; }
+  /* Left column — text aligned right against the dot column */
+  .pillars span:nth-child(odd) {
+    text-align: right;
+    padding-right: 14px;
+  }
+  /* Right column — text aligned left, dot rendered as ::before at the seam */
+  .pillars span:nth-child(even) {
+    text-align: left;
+    padding-left: 14px;
+    position: relative;
+  }
+  .pillars span:nth-child(even)::before {
+    content: '·';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--fg-muted);
+  }
+}
 
 /* ════════════════════════════════════════════════════════
    HERO

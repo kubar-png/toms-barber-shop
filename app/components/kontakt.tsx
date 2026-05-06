@@ -1,5 +1,7 @@
 import { MapDark } from "./map-dark";
 
+const EMAIL = "tomsbarbershopbrno" + "@" + "gmail.com";
+
 export function Kontakt() {
   return (
     <section className="section" id="contact">
@@ -21,9 +23,9 @@ export function Kontakt() {
               <div className="address-meta">616 00 · vchod z ulice Minská</div>
             </address>
             <div className="contact-links">
-              <a href="mailto:[email protected]">
+              <a href={`mailto:${EMAIL}`}>
                 <span>Email</span>
-                <span>[email protected]</span>
+                <span>{EMAIL}</span>
               </a>
               <a
                 href="https://instagram.com/_tomsbarbershop_"

@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { Hairs } from "./hairs";
 
+const EMAIL = "tomsbarbershopbrno" + "@" + "gmail.com";
+
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
 
@@ -168,7 +170,9 @@ export function Hero() {
       <div className="meta-row">
         <span className="corner">Po — Pá · 09:00 — 19:00</span>
         <span className="corner">@_tomsbarbershop_</span>
-        <span className="corner">[email protected]</span>
+        <a className="corner" href={`mailto:${EMAIL}`} style={{ textDecoration: "none" }}>
+          {EMAIL}
+        </a>
       </div>
     </section>
   );
