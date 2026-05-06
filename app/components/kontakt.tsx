@@ -28,9 +28,9 @@ export function Kontakt() {
                 <span>{EMAIL}</span>
               </a>
               <a
-                href="https://instagram.com/_tomsbarbershop_"
+                href="https://www.instagram.com/_tomsbarbershop_?igsh=Z2hsNTAzb21oNGl4"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
               >
                 <span>Instagram</span>
                 <span>@_tomsbarbershop_</span>

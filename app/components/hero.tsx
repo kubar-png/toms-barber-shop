@@ -169,7 +169,15 @@ export function Hero() {
       <div className="rule" style={{ marginTop: 32 }} />
       <div className="meta-row">
         <span className="corner">Po — Pá · 09:00 — 19:00</span>
-        <span className="corner">@_tomsbarbershop_</span>
+        <a
+          className="corner"
+          href="https://www.instagram.com/_tomsbarbershop_?igsh=Z2hsNTAzb21oNGl4"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
+          @_tomsbarbershop_
+        </a>
         <a className="corner" href={`mailto:${EMAIL}`} style={{ textDecoration: "none" }}>
           {EMAIL}
         </a>
