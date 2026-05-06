@@ -18,6 +18,7 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://toms-barber-shop.vercel.app"),
   title: "Tom's Barbershop — Brno-Žabovřesky",
   description:
     "Profesionalita, osobní přístup, precizní stříhání. Klasické pánské střihy, péče o vousy a holení horkým ručníkem v Brně-Žabovřeskách.",
@@ -26,6 +27,12 @@ export const metadata: Metadata = {
     description: "Klasické pánské střihy, péče o vousy a holení horkým ručníkem.",
     type: "website",
     locale: "cs_CZ",
+    siteName: "Tom's Barbershop",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tom's Barbershop — Brno-Žabovřesky",
+    description: "Klasické pánské střihy, péče o vousy a holení horkým ručníkem.",
   },
 };
 
