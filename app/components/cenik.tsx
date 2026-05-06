@@ -8,7 +8,7 @@ type Service = {
 
 // ── Reservio booking ──────────────────────────────────────
 const RESERVIO_BASE = "https://toms-barbershop.reservio.com/booking?step=2";
-const TOMAS_RID  = "270002c6-7eea-4223-9dc7-0ec457da8041";
+const TOMAS_RID = "270002c6-7eea-4223-9dc7-0ec457da8041";
 const DENISA_RID = "3378cf74-0056-4a91-8c45-4ecad0993bfa";
 const RESERVIO_FALLBACK = "https://toms-barbershop.reservio.com/order?what=time";
 
@@ -40,18 +40,16 @@ const DENISA: readonly Service[] = [
 ];
 
 function PriceList({
-  eyebrow,
-  title,
+  barber,
   services,
 }: {
-  eyebrow: string;
-  title: string;
+  barber: string;
   services: readonly Service[];
 }) {
   return (
     <div className="cenik-col">
-      <div className="col-eye">— {eyebrow}</div>
-      <h3>{title}</h3>
+      <div className="col-eye">— Ceník</div>
+      <h3>{barber}</h3>
       {services.map((s, i) => (
         <div key={i} className="cenik-row">
           <div>
@@ -65,7 +63,7 @@ function PriceList({
             href={s.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Rezervovat: ${s.name} u ${eyebrow}`}
+            aria-label={`Rezervovat: ${s.name} u ${barber}`}
           >
             Rezervovat
           </a>
@@ -89,8 +87,8 @@ export function Cenik() {
           </p>
         </div>
         <div className="cenik-grid">
-          <PriceList eyebrow="TOMÁŠ"  title="Cenovka" services={TOMAS} />
-          <PriceList eyebrow="DENISA" title="Cenovka" services={DENISA} />
+          <PriceList barber="Tomáš"  services={TOMAS} />
+          <PriceList barber="Denisa" services={DENISA} />
         </div>
       </div>
     </section>
